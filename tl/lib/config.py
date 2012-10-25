@@ -309,7 +309,7 @@ class Config(LazyDict):
         self['createdfrom'] = whichmodule()
         if 'xmpp' in self._cfile: self.setdefault('fulljids', 1)
         if 'fleet' in self._cfile:
-            self.setdefault('nick', "tl-bot")
+            self.setdefault('nick', "timeliner")
             self.setdefault('disable', 1)
             self.setdefault("owner", [])
             self.setdefault("user", "")
