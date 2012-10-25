@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+#
+#
+
+
+import sys
+import os
+
+sys.path.insert(0, os.getcwd())
+
+from tl.lib.plugins import plugs
+from tl.lib.boot import boot
+
+boot()
+plugs.loadall(force=True)
+plugsdict = plugs.all()
+plugslist = list(plugs.keys())
+plugslist.sort()
+
+t = "PLUGINLIST"
+print(t)
+print("=" * len(t))
+print("\n\n")
+
+maxp = 0
+
+for p in plugslist:
+    if len(p) > maxp: maxp = len(p)
+
+maxp += 5
+
+nr = 0
+for p in plugslist:
+    if "myplugs" in p: continue
+    got = False
+    nr += 1
+    nrspace = maxp - len(str(nr)) - len(p) - 2
+    try:
+         res = plugsdict[p].__doc__.strip()
+         dot = ""
+         reslines = res.split("\n")
+         print("%s) %s%s-=- %s%s" % (nr, p, " " * nrspace, dot, reslines[0]))
+         #print("%s) %s%s-=-\n" % (nr, p, " " * nrspace))
+         if len(reslines) < 2: continue
+         for r in reslines[1:]:
+             if not r: continue
+             print("%s    %s" % (" " * maxp, r.strip()))
+         got = True
+    except AttributeError: pass
+    if not got: print("%s) %s%s-=- no docstring available" % (nr, p, " " * nrspace))

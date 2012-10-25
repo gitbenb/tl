@@ -1,0 +1,6 @@
+include           MANIFEST.in
+include           Changelog
+include 	  distribute_setup.py
+recursive-include tl/examples *
+recursive-include tl/data *
+recursive-include tl/contrib/natural/locale *

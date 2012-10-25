@@ -1,0 +1,415 @@
+#!/usr/bin/env python3
+#
+#
+
+""" tl documentation generator. """
+
+## boot
+
+import os
+import sys
+sys.path.insert(0, "..")
+sys.path.insert(0, os.getcwd())
+sys.path.append(os.getcwd() + os.sep + 'tl')
+sys.path.append(os.getcwd() + os.sep + 'tl' + os.sep + "drivers")
+sys.path.append(os.getcwd() + os.sep + 'tl' + os.sep + "db")
+sys.path.append(os.getcwd() + os.sep + 'tl' + os.sep + "plugs")
+sys.path.append(os.getcwd() + os.sep + 'tl' + os.sep + "utils")
+sys.path.append(os.getcwd() + os.sep + 'tl' + os.sep + "tornado")
+sys.path.append(os.getcwd() + os.sep + 'tl' + os.sep + "api")
+sys.path.append(os.path.join(os.getcwd(), 'tl', 'plugs', 'core'))
+sys.path.append(os.path.join(os.getcwd(), 'tl', 'plugs', 'db'))
+sys.path.append(os.path.join(os.getcwd(), 'tl', 'plugs', 'extra'))
+
+## tl imports
+
+from tl.utils.exception import handle_exception
+from tl.utils.generic import toascii, splittxt, strippedtxt, waitforqueue, waitevents
+from tl.lib.plugins import plugs, Plugins
+from tl.lib.examples import examples
+from tl.lib.users import Users
+from tl.lib.commands import cmnds
+from tl.lib.threads import start_new_thread
+from tl.lib.boot import boot, plugin_packages
+from tl.lib.botbase import BotBase
+from tl.utils.exception import exceptionlist
+from tl.lib.datadir import getdatadir
+
+## basic imports
+
+import os
+import re
+import time
+import sys
+import logging
+import shutil
+
+## defines
+try: boot(sys.argv[1], force=True)
+except IndexError: boot(force=True)
+
+donot = ['twitter-auth', 'twitter-confirm', 'test-docmnd', 'test-plugs', 'admin-boot', 'admin-reloadall', 'reconnect', 'stop', 'quit', 'rss-peek' , 'rss-register', 'rss-get', 'hb-register', 'reboot', 'admin-stop']
+#donot = ['admin-stop', 'reboot', 'quit', 'admin-reloadall', 'reconnect']
+
+users = Users()
+bot = BotBase(botname="testbot", users=users)
+bot.allowall = True
+#bot.start(False)
+
+try:
+    bot.users.add('test', ['test@test', ], ['OPER', 'USER', 'QUOTE', 'MAIL', 'GUEST'])
+except Exception as ex: print(ex)
+
+try:
+    bot.users.setemail('test', 'feedbackloop@gmail.com')
+except Exception as ex: print(ex)
+
+noresult = []
+
+## functions
+
+def gendoc(m, f, output):
+    errors = {}
+    thefile = m.replace(".", os.sep)
+    thefile = thefile + os.sep + f
+    mod = m.replace(os.sep, '.')
+    base = os.path.abspath(f).split(os.sep)[-1].replace('.py','')
+    plugin = mod + '.' + base
+    output.write('.. _plugin:%s:\n\n' % base)
+    output.write('=' * (len(base)) + '\n')
+    output.write('%s' % base.upper() + '\n')
+    output.write('=' * (len(base)) + '\n')
+    print(("USING %s" % plugin))
+    if not plugin in plugs:
+        output.write("\nERROR: no %s plugin found\n\n" % base)
+        output.flush()
+        output.close()
+        return
+    output.write("| \n" + '\n')
+    output.write("about" + '\n')
+    output.write("-----" + '\n')
+    output.write("| \n" + '\n')
+    plug = plugs[plugin]
+    try:
+        author = plug.__author__
+        output.write(":author:  %s" % author.strip() + '\n')
+    except AttributeError:
+        output.write(":author:  FeedBackLoop <feedbackloop@gmail.com>" + '\n')
+    output.write(":contact: FREENODE/#tl" + '\n')
+    output.write(':distribution: core' + '\n')
+    try:
+        license = plugs.__license__
+        output.write(":license:  %s" % license.strip() + '\n\n')
+    except AttributeError:
+        output.write(":license: MIT" + '\n\n')
+    output.write("| \n" + '\n')
+    data = {'author': 'unknown', 'description': '', 'commands': [], 'examples': {}, 'descriptions': {}, 'callbacks': {}, 'aliases': {}, 'permissions': {}, 'options': {}}
+    data['description'] = plug.__doc__
+    try: first = plug.__first__
+    except AttributeError: first = []
+    try: last = plug.__last__
+    except AttributeError: last = []
+    cmndlist = first
+    for j, z in cmnds.items():
+        try:
+            if z.plugname != base: continue
+            if not j in cmndlist and not j in last: cmndlist.append(j)
+            if j not in data['descriptions']: data['descriptions'][j] = []
+            if z.func.__doc__: data['descriptions'][j] = z.func.__doc__ 
+        except AttributeError as ex: logging.error("attribute error for %s/%s - %s" % (j, z, str(ex)))
+    cmndlist.extend(last)
+    for command in cmndlist:
+        data['commands'].append(command)
+        try:
+            ex = examples[command]
+        except Exception as ex:
+            continue
+        try:
+            data['permissions'][command] = cmnds.perms(command)
+        except: 
+            pass
+        if command not in data['examples']: data['examples'][command] = []
+        exampleslist = re.split('\d\)', ex.example)
+        for e in exampleslist:
+            data['examples'][command].append(e.strip())
+        if command not in data['descriptions']: data['descriptions'][command] = ex.descr
+    if 'description' in data:
+        output.write("description" + '\n')
+        output.write( "-----------" + '\n')
+        output.write( "| \n\n")
+        output.write((data['description'] or 'none') + '\n\n')
+        output.write("\n\n| \n" + '\n')
+    output.write('commands' + '\n')
+    output.write("--------" + '\n')
+    output.write("| \n" + '\n')
+    output.write("\n    :commands in this plugin: %s\n\n" % ' .. '.join(cmndlist))
+    output.write("| \n" + '\n')
+    teller = 1
+    waiting = []
+    c = data['commands']
+    c.sort()
+    for command in c:
+        try:
+            funcname = cmnds[command].func.__name__
+        except AttributeError:
+            funcname = 'none'
+        if command in data['aliases']:
+            output.write('%s) *%s (%s) .. [%s]*' % (teller, command, data['aliases'][command], funcname) + '\n')
+        else:
+            output.write('%s) *%s .. [%s]*' % (teller, command, funcname) + '\n')
+        if command in data['descriptions']:
+            output.write('\n    :description: %s' % data['descriptions'][command] + '\n')
+        if command in data['permissions']:
+            output.write('\n    :permissions: %s' % ' .. '.join(data['permissions'][command]) + '\n')
+        if command in data['options']:
+            output.write("\n    :options: %s\n" % data['options'][command])
+        if "-cfg" in command:
+            output.write("\n    :code: :ref:`%s_%s`.\n" % ("tl.lib.persistconfig", "PersistConfig_class"))
+        elif command in data['examples']:
+            output.write("\n    :code: :ref:`%s_%s_command`.\n" % (plugin, command))
+        if command not in donot and command in data['examples']:
+            output.write('\n    :examples:' + '\n')
+            for i in data['examples'][command]:
+                if not i:
+                     continue
+                if i[0] != ";": cmnd = ";%s" % i.strip()
+                else: cmnd = i.strip()
+                output.write('\n    ::\n\n        <user> %s' % cmnd + '\n')
+                out = None
+                try:
+                    print(("\nDOING %s\n" % cmnd))
+                    if 'deadline' in i: continue
+                    e = bot.make_event("test@test", "#test", cmnd)
+                    e.nodispatch = False
+                    e.iscommand = True
+                    try:
+                        ee = e.execute(True)
+                        if not ee: logging.error("can't get response for %s" % cmnd) ; continue
+                        error = ""
+                    except Exception as ex:
+                        error = exceptionsmsg()
+                        output.write("        <ERROR> %s\n" % error)
+                        continue
+                    res = ee.wait()
+                    print("%s: %s" % (cmnd, "\n".join(res)))
+                    if not res:
+                        output.write("        <output> none" + '\n')
+                        noresult.append(cmnd)
+                        continue
+                    for r in res:
+                        if r == "<TL_END>" or r == None: continue
+                        output.write('        <output> %s\n' % bot.normalize(r))
+                    output.write("\n\n")
+                except Exception as ex:
+                    handle_exception(txt=i)
+        teller += 1
+    if not data['commands']:
+        output.write("no commands in this plugin" + '\n')
+    
+    output.flush()
+    output.close()
+    print(("DONE %s" % f)) 
+
+## doindexfile function
+
+def doindexfile(dirname, source=True):
+    dirs = [f for f in os.listdir(dirname) if os.path.isdir(os.path.join(dirname, f))]
+    if source: mods = [f[:-3] for f in os.listdir(dirname) if not os.path.isdir(os.path.join(dirname, f))]
+    else: mods = [f[:-4] for f in os.listdir(dirname) if not os.path.isdir(os.path.join(dirname, f))]
+    try: dirs.remove("__pycache__")
+    except: pass
+    try: dirs.remove("contrib")
+    except: pass
+    try: dirs.remove("data")
+    except: pass
+    try: dirs.remove("examples")
+    except: pass
+    try: mods.remove("index")
+    except: pass
+    mod = dirname.replace(os.sep, '.')
+    lastmod = mod.split(".")[-1]
+    depth = dirname.count(os.sep) - 1
+    if depth < 1: depth = 1
+    txt = """
+%s
+%s
+""" % (lastmod, "=" * len(lastmod))
+
+    if mods:
+        txt += """
+.. toctree::
+    :maxdepth: %s
+    :glob:
+
+    *    
+""" % 1
+    #    for m in mods:
+    #        txt += "\n    %s" % m
+    if dirs:
+        txt += """
+
+\n\n.. toctree::
+    :maxdepth: %s
+
+""" % 2
+        for dir in dirs:
+            txt += "\n    %s/index" % dir
+    return txt
+
+## domodfile function
+
+def domodfile(module, dir):
+    module = module.replace(os.sep, '.')
+    dd = [] 
+    for d in dir.split(os.sep):
+        dd.append(d)
+        z = os.sep.join(dd)
+        if not os.path.isdir('docs' + os.sep + z):
+            os.mkdir('docs' + os.sep + z)
+    plugin = dir.split(os.sep)[-1]
+    print(("writing %s" % plugin))
+    f = open('docs' + os.sep + dir + os.sep + 'index.txt', 'w')
+    f.write(doindexfile(dir))
+    f.flush()
+    f.close()
+    for mod in os.listdir(dir):
+        if mod.endswith('.pyc') or "__pycache__" in mod or mod.endswith('~') or "__init__" in mod: continue
+        m = mod.split(os.sep)[-1]
+        z = mod[:-3]
+        if mod: thedir = dir + os.sep + mod
+        else: thedir = dir
+        mm = module + '.' + m
+        if os.path.isdir(thedir):
+            if 'data' in thedir or 'contrib' in thedir or 'example' in thedir: continue
+            domodfile(mm, thedir)
+            continue
+        else:
+            n = mod[:-3]
+            p = module + '.' + n
+            predir = '..' + os.sep
+            mfile = '..' + os.sep + predir * p.count('.') + thedir 
+            if not os.path.isdir('docs' + os.sep + dir):
+                os.mkdir('docs' + os.sep + dir)
+            f = open('docs' + os.sep + thedir[:-3] + '.txt', 'w')
+            f.write(".. _%s:\n\n" % p)
+            f.write("%s\n%s\n\n" % (n, '~' * len(n)))
+            if not "__init__" in n and not "fish" in n: f.write(".. automodule:: %s\n        :show-inheritance:\n        :members:\n        :undoc-members:\n\n" % p)
+            data = ""
+            prevline = ""
+            f.write("CODE\n----\n\n    ::\n\n")
+            stopparse = False
+            for line in open(thedir, 'r'):
+                l = line.strip()
+                if l.startswith("####"): break
+                if l.startswith("## "):
+                    splitted = l.split()
+                    if len(splitted) > 1:
+                        ll = l.split()[1]
+                        for w in ll.split("/"):
+                            f.write(".. _%s_%s_%s:\n\n" % (p, w,  "_".join(l.split()[2:])))
+                        f.write(line[3:].strip() + "\n")
+                        f.write("-" * len(line.strip()) + "\n")
+                        f.write("\n    ::\n\n")
+                    else: f.write("        " + line)
+                else: f.write("        " + line)
+            f.flush()
+            f.close() 
+    sys.stdout.write(" .. done\n")
+
+## writeindexfile function
+
+def writeindexfile(dir, source=True):
+    dd = []
+    for d in dir.split(os.sep):
+        dd.append(d)
+        z = os.sep.join(dd)
+        if not os.path.isdir(z):
+            os.mkdir(z)
+    f = open(dir + os.sep + "index.txt", "w")
+    f.write(doindexfile(dir, source))
+    f.close()
+
+## domods function
+
+def domods(dir):
+    if "handbook" in dir: return
+    d = dir 
+    d = d.replace(os.sep, '.')
+    domodfile(d, dir)
+
+## main
+
+if __name__ == '__main__':
+    threads = []
+    print(sys.argv)
+    if len(sys.argv) == 2 and sys.argv[1] == "index": 
+        writeindexfile(os.path.join("docs", "plugins"))
+        writeindexfile(os.path.join("docs", "plugins", "db"))
+        writeindexfile(os.path.join("docs", "plugins", "core"))
+        writeindexfile(os.path.join("docs", "plugins", "extra"))
+        domods("tl")
+        print("done")
+        os._exit(0)
+    try: boot(sys.argv[1])
+    except IndexError: boot()
+    import shutil
+    import os.path
+    from tl.utils.generic import touch
+    from tl.utils.exception import handle_exception
+    from tl.utils.log import setloglevel
+    setloglevel("warn")
+    try: shutil.rmtree(os.getcwd() + os.sep + 'docs' + os.sep + 'plugins') ; logging.warn("removed plugins dir")
+    except: pass
+    try: shutil.rmtree(os.getcwd() + os.sep + 'docs' + os.sep + 'tl') ; logging.warn("removed tl dir")
+    except: pass
+    try: shutil.rmtree(os.getcwd() + os.sep + 'docs' + os.sep + 'docrun') ; logging.warn("removed docrun dir")
+    except: pass
+    domods("tl")
+    print("datadir was %s - sleeping 5 seconds." % getdatadir())
+    try:
+         os.mkdir('docs' + os.sep + 'plugins')
+         os.mkdir('docs' + os.sep + 'plugins' + os.sep + 'core')
+         os.mkdir('docs' + os.sep + 'plugins' + os.sep + 'db')
+         os.mkdir('docs' + os.sep + 'plugins' + os.sep + 'extra')
+    except: pass
+    writeindexfile(os.path.join("docs", "plugins"), False)
+    for file in os.listdir(os.path.join('tl', 'plugs', 'db')):
+        if not file.endswith('.py') or '__init__' in file:
+            continue
+        try: 
+            f = open(os.path.join('docs', 'plugins', 'db', file[:-3] + '.txt'), 'w')
+            threads.append(start_new_thread(gendoc, ('tl.plugs.db', file, f)))
+        except: handle_exception()
+    writeindexfile(os.path.join("docs", "plugins", "db"), False)
+    for file in os.listdir(os.path.join('tl', 'plugs', 'core')):
+        if not file.endswith('.py') or '__init__' in file:
+            continue
+        try:
+            f = open(os.path.join('docs', 'plugins', 'core', file[:-3] + '.txt'), 'w')
+            threads.append(start_new_thread(gendoc, ('tl.plugs.core', file, f)))
+        except: handle_exception()
+    writeindexfile(os.path.join("docs", "plugins", "core"), False)
+    for file in os.listdir(os.path.join('tl', 'plugs', 'extra')):
+        if not file.endswith('.py') or '__init__' in file:
+            continue
+        try:
+            f = open(os.path.join('docs', 'plugins', 'extra', file[:-3] + '.txt'), 'w')
+            threads.append(start_new_thread(gendoc, ('tl.plugs.extra', file, f)))
+        except: handle_exception()
+    writeindexfile(os.path.join("docs", "plugins", "extra"), False)
+
+    for t in threads:
+        t.join(180)
+
+    if exceptionlist:
+        for ex in exceptionlist:
+            print(ex)
+    else: print("no exceptions")
+    
+    from tl.utils.log import errors
+    if errors:
+        for error in errors:
+            print(error)
+    else: print("no errors")
+    if noresult: print("too late:") ; print(noresult)
+    else: print("all on time")

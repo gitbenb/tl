@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+#
+#
+
+## bootstrap
+
+import warnings
+warnings.simplefilter("ignore")
+
+## basic imports
+
+import logging
+import time
+import os
+import sys
+
+## path manipulation
+
+sys.path.insert(0, os.getcwd())
+
+## options parser
+
+from tl.utils.opts import do_opts
+
+(opts, cfg) = do_opts("sleek")
+
+## remaining tl imports
+
+from tl.lib.boot import boot
+from tl.lib.errors import NoOwnerSet
+from tl.lib.fleet import getfleet
+from tl.lib.exit import globalshutdown
+from tl.utils.exception import handle_exception
+from tl.utils.mainloop import mainloop
+from tl.lib.threads import start_new_thread
+
+## boot the bot
+
+boot(opts.datadir)
+
+## start the bot
+
+try:
+    from tl.drivers.sleek.bot import SleekBot
+    bot = SleekBot(cfg)
+except NoOwnerSet as ex:
+    print("owner is not set in %s - use the -o option" % str(ex))
+    os._exit(1)
+
+if opts.channel and not opts.channel in bot.cfg.channels:
+    bot.cfg.channels.append(opts.channel)
+    bot.cfg.save()
+
+try:
+    logging.warn("starting sleekxmpp bot with user %s" % bot.cfg.user)
+    start_new_thread(bot.boot, ())
+except KeyboardInterrupt: globalshutdown()
+except: handle_exception() ; globalshutdown()
+
+if opts.api:
+    from tl.api import server
+    server.runapiserver(opts.apiport)
+else: mainloop()

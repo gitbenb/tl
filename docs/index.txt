@@ -1,0 +1,169 @@
+Welcome to TIMELINE
+=================
+
+the tl pakage contains the following programs:
+
+::
+
+    * tl - console bot
+    * tl-fleet - mix IRC and XMPP bots
+    * tl-irc - IRC bot
+    * tl-tornado - a shell web server based on tornado
+    * tl-sleek - XMPP bot
+
+note: TIMELINE is in very early stage of development right now and still subject to change of protocols and API.
+
+see https://github.com/feedbackflow/tl
+
+license
+~~~~~~~
+
+TIMELINE is free code (MIT) and can be cloned where needed.
+
+contact the developer
+~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    * email: feedbackflow@gmail.com
+    * jabber/xmpp: feedbackflow@gmail.com
+    * IRC: feedbackflow on #tl irc.freenode.net
+    * twitter: http://twitter.com/feedbackflow
+
+
+running a development version of the bot
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+first checkout the main bot from the mercurial repository
+
+::
+
+    git clone https://github.com/feedbackflow/tl.git
+
+now you can run the programs in the bin directory with the
+./bin/<program>  command. try ./bin/tl for the console app
+
+
+HANDBOOK
+========
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+                
+    handbook/*
+
+PLUGINS
+=======
+
+core
+~~~~
+
+.. toctree::        
+    :maxdepth: 2
+
+    plugins/core/index
+
+extra
+~~~~~
+
+.. toctree::        
+    :maxdepth: 2
+
+    plugins/extra/index
+
+db
+~~
+
+.. toctree::        
+    :maxdepth: 2
+
+    plugins/db/index
+
+CODE
+====
+
+tl package
+~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    tl/*
+
+tl.api
+~~~~~~~
+
+.. toctree::
+    :maxdepth: 2
+
+    tl/api/index
+
+tl.db
+~~~~~~
+
+.. toctree::
+    :maxdepth: 2
+
+    tl/db/index
+
+tl.drivers
+~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 3
+
+    tl/drivers/index
+
+tl.lib
+~~~~~~~
+
+.. toctree::
+    :maxdepth: 2
+
+    tl/lib/index
+
+
+tl.tornado
+~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 2
+
+    tl/tornado/index
+
+tl.utils
+~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 2
+
+    tl/utils/index
+
+PLUGIN CODE
+===========
+
+core plugins
+~~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 2
+
+    tl/plugs/core/index
+
+db plugins
+~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 2
+
+    tl/plugs/db/index
+
+extra plugins
+~~~~~~~~~~~~~
+
+.. toctree::
+    :maxdepth: 2
+
+    tl/plugs/extra/index

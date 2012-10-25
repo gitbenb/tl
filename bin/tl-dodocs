@@ -1,0 +1,9 @@
+# do the documentation generation cycle
+#
+#
+
+cd docs
+rm -fR gzz
+cd ..
+./bin/tl-makedocs docs/docrun
+sphinx-build -N docs docs/html
