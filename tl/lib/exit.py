@@ -1,4 +1,4 @@
-# tl/exit.py
+# tl/lib/exit.py
 #
 #
 
@@ -29,7 +29,7 @@ def globalshutdown(exit=True):
     try:
         try: sys.stdout.write("\n")
         except: pass
-        txt = "SHUTTING DOWN (%s)" % whichmodule(2)
+        txt = "SHUTTING DOWN (%s)" % time.ctime(time.time())
         logging.error(txt)
         from .fleet import getfleet
         fleet = getfleet()
