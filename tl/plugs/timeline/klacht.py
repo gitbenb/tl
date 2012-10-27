@@ -11,7 +11,7 @@ from tl.lib.datadir import getdatadir
 from tl.lib.persist import TimedPersist, PersistCollection
 from tl.lib.commands import cmnds
 from tl.lib.examples import examples
-from tl.id import get_uid, get_bid
+from tl.id import get_uid, get_id
 
 ## basic imports
 
@@ -33,7 +33,7 @@ class Klacht(TimedPersist):
        self.data.klacht = self.data.klacht or klacht or "geen text gegeven"
        self.data.username = self.data.username or username or "anon"
        self.data.uid = self.data.uid or get_uid(username)
-       self.data.origin = self.data.origin or origin or get_bid()
+       self.data.origin = self.data.origin or origin or get_id()
 
 class Klachten(PersistCollection): pass
 
