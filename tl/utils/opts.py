@@ -11,7 +11,7 @@ from tl.version import version
 from tl.utils.name import stripname
 from tl.lib.errors import NoOptsSet, NoUsers
 from tl.utils.log import setloglevel, getloglevel
-from tl.lib.datadir import setdatadir, getdatadir
+from tl.lib.datadir import setdatadir, getdatadir, homedir
 from tl.lib.users import users_boot
 from tl.id import get_uid, get_id
 
@@ -177,8 +177,9 @@ def do_opts(type="console", args=[], *argslist, **kwargs):
     opts =  make_opts(args, target, *argslist, **kwargs)
     if type == "console": ll = "error"
     else: ll = "warn" 
+    if opts.datadir: setdatadir(opts.datadir)
+    else: setdatadir(homedir + os.sep + ".tl")
     setloglevel(opts.loglevel or ll)
-    if opts.datadir: setdatadir(opts.datadir) #; logging.warn("datadir set to %s" % getdatadir())
     if opts.bork: tl.utils.exception.bork = True ; logging.warn("bork mode enabled")
     if opts.nourl: tl.utils.url.enabled = False ; logging.warn("url fetching disabled")
     if opts.nocolors: tl.utils.log.docolor = False ; logging.warn("colors in logging is disabled")

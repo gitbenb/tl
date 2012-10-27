@@ -27,6 +27,8 @@ class ConsoleEvent(EventBase):
         self.bot = bot
         self.console = console
         self.userhost = get_id()
+        try: self.nick = self.userhost.split("@")[0]
+        except: self.nick = "nonick"
         self.origin = self.userhost
         self.txt = input
         self.channel = self.userhost

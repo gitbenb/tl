@@ -63,6 +63,15 @@ def handle_reboot(bot, ievent):
 cmnds.add("reboot", handle_reboot, "OPER")
 examples.add("reboot", "reboot the bot.", "reboot")
 
+## datadir command
+
+def handle_datadir(bot, event):
+    from tl.lib.datadir import getdatadir
+    event.reply("datadir is %s" % getdatadir())
+
+cmnds.add("datadir", handle_datadir, "OPER")
+examples.add("datadir", "show the datadir this bot is using", "datadir")
+
 ## ping command
 
 def handle_ping(bot, event):

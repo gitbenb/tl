@@ -4,10 +4,6 @@
 
 """ log module. """
 
-## tl import
-
-from tl.lib.datadir import getdatadir
-
 ## basic imports
 
 import logging
@@ -109,6 +105,7 @@ def setloglevel(level_name="warn", colors=True, datadir=None):
     if not level_name: return
     global level
     global filehandler
+    from tl.lib.datadir import getdatadir
     LOGDIR = init(getdatadir())
     format_short = "\033[1m%(asctime)-8s\033[0m -=- %(name)-1s -=- \033[93m%(message)-75s\033[0m -=- \033[92m%(module)s.%(funcName)s.%(lineno)s\033[0m -=- \033[94m%(threadName)s\033[0m"
     format_short_plain = "%(asctime)-8s -=- %(name)-1s -=- %(message)-75s -=- %(module)s.%(funcName)s.%(lineno)s -=- %(threadName)s"

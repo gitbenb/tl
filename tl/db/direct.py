@@ -87,7 +87,7 @@ class Db(object):
     def execute(self, execstr, args=None, retry=2):
         """ execute string on database. """
         time.sleep(0.001)
-        result = None
+        result = 0
         execstr = execstr.strip()
         if 'sqlite' in self.dbtype: execstr = execstr.replace('%s', '?')
         if self.dbtype == 'mysql':
@@ -97,16 +97,22 @@ class Db(object):
                 try: self.reconnect()
                 except Exception as ex: logging.error('failed reconnect: %s' % str(ex)) ; return
         logging.debug('exec %s %s' % (execstr, args))
+        got = False
+        counter = 0
         for i in range(retry):
             if not self.connection: self.reconnect()
             if not self.connection: raise NoDbConnection()
             if "sqlite" in self.dbtype:
-                try: result = self.doit(execstr, args) ; break
-                except sqlite3.OperationalError as ex: logging.error(str(ex))
+                try: result = self.doit(execstr, args) ; got = True ; break
+                except sqlite3.OperationalError as ex: logging.info(str(ex))
                 except Exception as ex: handle_exception() ; logging.error(str(ex))
             else:
-                try: result = self.doit(execstr, args) ; break
+                try: result = self.doit(execstr, args) ; got = True ; break
                 except Exception as ex: logging.error(str(ex))
+            counter += 1
+        if got:
+            if counter == 1: logging.warn("db query is ok - 1 retry" % counter) 
+            else: logging.warn("db query is ok - %s retries" % counter)
         return result
 
     def doit(self, execstr, args=None):

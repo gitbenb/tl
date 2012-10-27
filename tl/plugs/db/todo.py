@@ -79,6 +79,7 @@ class TodoDb(object):
         res = []
         if result:
             for i in result:
+                if not i: continue
                 args = [i[1],i[5], i[2], i[3], i[4], i[6], i[0]]
                 res.append(TodoItem(*args))
         return res

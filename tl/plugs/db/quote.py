@@ -76,7 +76,8 @@ class QuotesDb(object):
         global db
         if not db: logging.error("plugin isnt initialised yet") ; return 0
         result = db.execute(""" SELECT COUNT(*) FROM quotes """)
-        return result[0][0]
+        try: return result[0][0]
+        except: return 0
 
     def add(self, nick, userhost, quote):
         """ add a quote """

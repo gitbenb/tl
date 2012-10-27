@@ -15,80 +15,82 @@ import sys
 ## exceptions
 
 
-class TLBotError(Exception):
+class TLError(Exception):
     pass
 
-class CannotBindBot(TLBotError): pass
+class DatadirNotSet(TLError): pass
 
-class NoUsers(TLBotError): pass
+class CannotBindBot(TLError): pass
 
-class TLStop(TLBotError): pass
+class NoUsers(TLError): pass
 
-class NoOptsSet(TLBotError): pass
+class TLStop(TLError): pass
 
-class NoDbConnection(TLBotError): pass
+class NoOptsSet(TLError): pass
 
-class NoDbResult(TLBotError): pass
+class NoDbConnection(TLError): pass
 
-class CantLogon(TLBotError): pass
+class NoDbResult(TLError): pass
 
-class URLNotEnabled(TLBotError): pass
+class CantLogon(TLError): pass
 
-class JSONParseError(TLBotError): pass
+class URLNotEnabled(TLError): pass
 
-class StreamError(TLBotError): pass
+class JSONParseError(TLError): pass
 
-class RequireError(TLBotError): pass
+class StreamError(TLError): pass
 
-class CannotAuth(TLBotError): pass
+class RequireError(TLError): pass
 
-class NotConnected(TLBotError): pass
+class CannotAuth(TLError): pass
 
-class FeedAlreadyExists(TLBotError): pass
+class NotConnected(TLError): pass
 
-class MemcachedCounterError(TLBotError): pass
+class FeedAlreadyExists(TLError): pass
 
-class NoSuchFile(TLBotError): pass
+class MemcachedCounterError(TLError): pass
 
-class BotNotEnabled(TLBotError): pass
+class NoSuchFile(TLError): pass
 
-class NoProperDigest(TLBotError): pass
+class BotNotEnabled(TLError): pass
 
-class NoChannelProvided(TLBotError): pass
+class NoProperDigest(TLError): pass
 
-class NoInput(TLBotError): pass
+class NoChannelProvided(TLError): pass
 
-class PropertyIgnored(TLBotError): pass
+class NoInput(TLError): pass
 
-class BotNotSetInEvent(TLBotError): pass
+class PropertyIgnored(TLError): pass
 
-class FeedProviderError(TLBotError): pass
+class BotNotSetInEvent(TLError): pass
 
-class CantSaveConfig(TLBotError): pass
+class FeedProviderError(TLError): pass
 
-class NoOwnerSet(TLBotError): pass
+class CantSaveConfig(TLError): pass
 
-class NameNotSet(TLBotError): pass
+class NoOwnerSet(TLError): pass
 
-class NoSuchUser(TLBotError): pass
+class NameNotSet(TLError): pass
 
-class NoUserProvided(TLBotError): pass
+class NoSuchUser(TLError): pass
 
-class NoSuchBotType(TLBotError): pass
+class NoUserProvided(TLError): pass
 
-class NoChannelSet(TLBotError): pass
+class NoSuchBotType(TLError): pass
 
-class NoSuchWave(TLBotError): pass
+class NoChannelSet(TLError): pass
 
-class NoSuchCommand(TLBotError): pass
+class NoSuchWave(TLError): pass
 
-class NoSuchPlugin(TLBotError): pass
+class NoSuchCommand(TLError): pass
 
-class NoOwnerSet(TLBotError): pass
+class NoSuchPlugin(TLError): pass
 
-class PlugsNotConnected(TLBotError): pass
+class NoOwnerSet(TLError): pass
 
-class NoEventProvided(TLBotError): pass
+class PlugsNotConnected(TLError): pass
 
-class WrongType(TLBotError): pass
+class NoEventProvided(TLError): pass
+
+class WrongType(TLError): pass
 

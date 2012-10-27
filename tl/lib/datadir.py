@@ -7,11 +7,12 @@
 ## tl imports
 
 from tl.utils.source import getsource
-
+from tl.lib.errors import DatadirNotSet
 ## basic imports
 
 import re
 import os
+import os.path
 import shutil
 import logging
 import os.path
@@ -22,7 +23,10 @@ import getpass
 try: homedir = os.path.abspath(os.path.expanduser("~"))
 except: homedir = os.getcwd()
 
-datadir = homedir + os.sep + ".tl"
+datadir = None
+absdatadir = None
+reldatadir = None 
+normdatadir = None
 
 ## helper functions
 
@@ -121,6 +125,7 @@ def makeconfigs():
 
 def getdatadir():
     global datadir
+    if datadir == None: raise DatadirNotSet()
     return datadir
 
 ## getdatadirstr function
@@ -135,5 +140,13 @@ def getdatadirstr(stripname=False):
 ## setdatadir function
 
 def setdatadir(ddir):
+    if not ddir: raise DatadirNotSet()
     global datadir
-    datadir = ddir
+    global absdatadir
+    global reldatadir
+    try:
+         datadir = ddir
+         absdatadir = os.path.abspath(ddir)
+         normdatadir = os.path.normpath(absdatadir)
+         reldatadir = os.path.relpath(normdatadir, homedir)
+    except Exception as ex: print(ex) ; logging.error("not using full path - %s" % ddir) ; datadir = ddir
