@@ -12,18 +12,15 @@ import io
 
 class cstr(str): pass
 
+## cbytes class
+
+class cbytes(bytes): pass
 
 ## istr class
 
-class istr(io.StringIO):
+class istr(io.StringIO): pass
 
-    """ istr is a stream of chars. """
+## ibytes class
 
-    pass
-
-class ibytes(io.BytesIO):
-
-    """ ibytes is a stream of bytes. """
-
-    pass
+class ibytes(io.BytesIO): pass
     

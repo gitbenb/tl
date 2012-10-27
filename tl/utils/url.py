@@ -161,13 +161,15 @@ def geturl2(url, decode=False, timeout=5, dobytes=False, html=False, *args, **kw
     opener = urllib.request.build_opener()
     result = opener.open(request, timeout=timeout)
     res = result.read()
-    if not res: return res
-    #res = fromenc(res, "utf-8")
-    if html: res = res.replace("//", "/")
-    res = cstr(res)
-    #else: res = ibytes(bytes(res, "utf-8"))
     info = result.info()
     result.close()
+    if not res: return res
+    #res = fromenc(res, "utf-8")
+#    if dobytes: res = ibytes(bytes(res, "utf-8"))
+    if dobytes: res = ibytes(res) ; print(dir(ibytes)) ; print(res)
+    else:
+        if html: res = res.replace("//", "/")
+        res = cstr(res)
     res.status = result.code
     res.info = info
     return res

@@ -455,7 +455,8 @@ class BotBase(LazyDict):
             if event:
                 event.nrout += 1
                 if event.displayname: txt = "[%s] %s" % (event.displayname, txt)
-                for i in result: event.outqueue.append(i)
+                if result:
+                    for i in result: event.outqueue.append(i)
                 event.resqueue.append(txt)
                 if event.nooutput: event.ready() ; return
             else: logging.info("not putting txt on queues")
@@ -627,18 +628,16 @@ class BotBase(LazyDict):
         logging.debug("> first_callbacks > %s" % e.txt) 
         first_callbacks.check(self, e)
 
-    def make_event(self, origin, channel="", txt="", event=None, wait=0, showall=False, nooutput=False, cbtype="", push=[]):
+    def make_event(self, origin="", channel="", txt="", event=None, wait=0, showall=False, nooutput=False, cbtype="", push=[]):
         """ insert an event into the callbacks chain. """
-        assert origin
         if not channel: channel = "default"
         if event: e = cpy(event)
         else: e = EventBase(bot=self)
         e.cbtype = cbtype or "EVENT"
-        e.origin = origin
-        e.uid = get_uid(origin)
+        e.origin = origin or e.origin or get_id()
         e.auth = e.origin
         e.userhost = e.origin
-        e.channel = channel
+        e.channel = channel or e.channel or ""
         e.txt = str(txt)
         e.nick = e.userhost.split('@')[0]
         e.showall = showall

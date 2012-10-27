@@ -96,11 +96,9 @@ class OverFlowAPI(object):
         url = 'http://api.stackoverflow.com/1.0%s/%s?body=true&pagesize=%s' % (mount, urllib.parse.urlencode(options), size)
         if self.api_key is not None:
             url += '&key=%s' % self.api_key
-        content = geturl2(url, timeout=15)
+        content = geturl2(url, timeout=15, dobytes=True)
         if not content: return None
-        contentstream = istr(content)
-        print(contentstream)
-        zipped = gzip.GzipFile(fileobj=contentstream).read()
+        zipped = gzip.GzipFile(fileobj=content).read()
         return str(zipped, "utf-8")
   
     def timeline(self, target, size=30):
