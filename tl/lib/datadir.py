@@ -8,6 +8,7 @@
 
 from tl.utils.source import getsource
 from tl.lib.errors import DatadirNotSet
+
 ## basic imports
 
 import re
@@ -47,6 +48,7 @@ def makedirs(ddir=None):
     """ make subdirs in datadir. """
     global datadir
     datadir = ddir or getdatadir()
+    if not datadir: raise DatadirNotSet()
     logging.warn("datadir - set to %s" % datadir)
     if not os.path.isdir(ddir):
         try: os.mkdir(ddir)

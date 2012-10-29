@@ -84,7 +84,6 @@ core_opts = [
                 ('', '--exceptions', "store_true", False, 'exceptions', "show exceptions when terminating the bot"),
                 ('', '--popen', "store_true", False, 'allowpopen', "allow plugins that use os.popen (spawn a new shell) - DANGER !!"),
                 ('', '--fleet', "store_true", False, 'fleet', "start the fleet"),
-                ('-c', '--channel', 'string', "", 'channel',  "channel to join")
             ]
 
 bot_opts = [
@@ -292,6 +291,7 @@ def makeircconfig(opts=None, botname=None):
     if opts.channel:
         if not opts.channel in cfg.channels: cfg.channels.append(opts.channel)
     else: cfg.channels = cfg.channels or []
+    cfg.save()
     return cfg
 
 ## makexmppconfig function
@@ -306,7 +306,6 @@ def makexmppconfig(opts=None, botname=None, type="sleek"):
     cfg = Config('fleet' + os.sep + botname + os.sep + 'config')
     cfg.type = type
     cfg.name = botname
-    dosave = False
     if not opts:
         cfg.user = cfg.user or ""
         cfg.host = cfg.host or ""
@@ -321,7 +320,7 @@ def makexmppconfig(opts=None, botname=None, type="sleek"):
     if not cfg.disable: cfg.disable = False
     if opts.enable: cfg.disable = 0 ; logging.warn("enabling %s bot in %s" % (botname, cfg.cfile))
     if not cfg.channels: cfg.channels = []
-    if opts.user: cfg.user = opts.user ; dosave = True
+    if opts.user: cfg.user = opts.user
     if not cfg.user: raise NoUserProvided("try giving the -u option to the bot (and maybe -p as well) or run tl-init and edit %s" % cfg.cfile)
     if opts.user:
         try: cfg.host = opts.user.split('@')[1]
@@ -334,13 +333,13 @@ def makexmppconfig(opts=None, botname=None, type="sleek"):
     else: cfg.server = cfg.server or ""
     if opts.name: cfg.jid = opts.name
     if not cfg.owner: cfg.owner = []
-    if opts.owner and opts.owner not in cfg.owner: cfg.owner.append(opts.owner) ; dosave = True
+    if opts.owner and opts.owner not in cfg.owner: cfg.owner.append(opts.owner)
     if not cfg.owner: raise NoOwnerSet("try using the -o option or run tl-init and edit %s" % cfg.cfile)
     if opts.nick: cfg.nick = opts.nick
     else: cfg.nick = cfg.nick or "tl"
     if opts.channel:
-        if not opts.channel in cfg.channels: cfg.channels.append(opts.channel) ; dosave = True
+        if not opts.channel in cfg.channels: cfg.channels.append(opts.channel) 
     else: cfg.channels = cfg.channels or []
-    if dosave: cfg.save()
+    cfg.save()
     return cfg
 
