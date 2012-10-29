@@ -33,6 +33,7 @@ sys.path.insert(0, os.path.abspath(os.path.join('..', 'tl', 'contrib')))
 sys.path.insert(0, os.path.abspath(os.path.join('..', 'tl', 'plugs','core')))
 sys.path.insert(0, os.path.abspath(os.path.join('..', 'tl', 'plugs','extra')))
 sys.path.insert(0, os.path.abspath(os.path.join('..', 'tl', 'plugs','db')))
+sys.path.insert(0, os.path.abspath(os.path.join('..', 'tl', 'plugs','timeline')))
 sys.path.insert(0, os.path.abspath(os.path.join('..', 'tl', 'data')))
 
 # tl set datadir

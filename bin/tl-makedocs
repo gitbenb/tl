@@ -17,9 +17,11 @@ sys.path.append(os.getcwd() + os.sep + 'tl' + os.sep + "plugs")
 sys.path.append(os.getcwd() + os.sep + 'tl' + os.sep + "utils")
 sys.path.append(os.getcwd() + os.sep + 'tl' + os.sep + "tornado")
 sys.path.append(os.getcwd() + os.sep + 'tl' + os.sep + "api")
+sys.path.append(os.getcwd() + os.sep + 'tl' + os.sep + "contrib")
 sys.path.append(os.path.join(os.getcwd(), 'tl', 'plugs', 'core'))
 sys.path.append(os.path.join(os.getcwd(), 'tl', 'plugs', 'db'))
 sys.path.append(os.path.join(os.getcwd(), 'tl', 'plugs', 'extra'))
+sys.path.append(os.path.join(os.getcwd(), 'tl', 'plugs', 'timeline'))
 
 ## tl imports
 
@@ -43,6 +45,12 @@ import time
 import sys
 import logging
 import shutil
+
+from tl.lib.datadir import setdatadir
+from tl.version import getversion
+setdatadir("docs" + os.sep + "docrun")
+
+print(getversion("MAKEDOCS"))
 
 ## defines
 try: boot(sys.argv[1], force=True)

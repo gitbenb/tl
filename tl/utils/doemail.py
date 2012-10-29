@@ -4,10 +4,6 @@
 
 """ email related functions. """
 
-## tl imports
-
-from tl.lib.config import getmainconfig
-
 ## basic imports
 
 import smtplib
@@ -36,6 +32,7 @@ def sendmail(user, to, subject, text, attach, server=None, port=None):
    part.add_header('Content-Disposition','attachment; filename="%s"' % os.path.basename(attach))
    msg.attach(part)
 
+   from tl.lib.config import getmainconfig
    cfg = getmainconfig()
 
    mailServer = smtplib.SMTP(server or mainconfig.emailserver or "localhost", 25 or mainconfig.emailport)
