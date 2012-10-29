@@ -119,7 +119,6 @@ fleet_opts = [
            ]
 
 console_opts = [
-                ('', '--name', 'string', "", 'name', "bot's name"),
                ]
 
 ## opts_add function
@@ -171,7 +170,7 @@ def do_opts(type="console", args=[], *argslist, **kwargs):
     elif type in ["xmpp", "sxmpp", "sleek"]: target = api_opts + bot_opts + xmpp_opts
     elif type == "fleet": target = api_opts + fleet_opts
     elif type == "init": target = []
-    elif type == "console": target = console_opts
+    elif type == "console": target = bot_opts + console_opts
     else: target = []
     opts =  make_opts(args, target, *argslist, **kwargs)
     if type == "console": ll = "error"

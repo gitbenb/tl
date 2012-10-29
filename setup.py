@@ -58,7 +58,7 @@ setup(
     url='https://github.com/feedbackflow/tl',
     author='Bart Thate',
     author_email='feedbackflow@gmail.com',
-    description='The Timeline Bot',
+    description='T I M E L I N E',
     license='MIT',
     include_package_data=True,
     zip_safe=False,
@@ -133,7 +133,7 @@ setup(
               'tl/contrib/sleekxmpp/thirdparty/suelta',
               'tl/contrib/sleekxmpp/thirdparty/suelta/mechanisms',
            ],
-    long_description = """ The Timeline Bot -  https://github.com/feedbackflow/tl """,
+    long_description = """ T I M E L I N E -  keep track of what you are doing (console, IRC, XMPP) - https://github.com/feedbackflow/tl """,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Console',
