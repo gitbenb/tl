@@ -4,12 +4,12 @@
 
 import sys, site, os
 
-sys.path.insert(0, os.curdir())
+sys.path.insert(0, os.getcwd())
 
 from tl.version import __version__
 
 from optparse import OptionParser
-parser = OptionParser(usage='usage: %prog option', version='%prog %s' % __version__)
+parser = OptionParser(usage='usage: %prog option', version='%prog' +  __version__)
 
 parser.add_option("-f", "--file",  type='string', default=False, dest='file', help="provide file (egg) to install")
 
@@ -25,7 +25,6 @@ if not os.path.isdir(installdir):
 print("setting PYTHONPATH to %s" % installdir)
 os.environ['PYTHONPATH'] = installdir
 
-sys.path.insert(0, os.getcwd())
 sys.path.insert(0, installdir)
 sys.path.insert(0, installdir + os.sep + 'bin')
 

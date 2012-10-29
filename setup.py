@@ -62,7 +62,7 @@ setup(
     license='MIT',
     include_package_data=True,
     zip_safe=False,
-    install_requires=['distribute'],
+    requires=['distribute'],
     scripts=['bin/tl',
              'bin/tl-fleet',
              'bin/tl-irc',

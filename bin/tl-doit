@@ -3,4 +3,3 @@
 export PATH="./bin:.:$PATH"
 python3 setup.py sdist
 ./bin/tl-nest -f dist/tl-$1.tar.gz
-cd tl-nest
