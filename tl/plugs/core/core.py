@@ -174,6 +174,7 @@ def handle_version(bot, ievent):
     version = getversion(bot.type.upper())
     cfg = getmainconfig()
     if cfg.dbenable: version += " - " + cfg.dbtype.upper()
+    tip = None
     if ievent.rest and ievent.rest == "repo":
         try: 
             from mercurial import context, hg, node, repo, ui
