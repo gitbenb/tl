@@ -1,4 +1,4 @@
-#!python3
+#!/usr/bin/env python3
 """Bootstrap distribute installation
 
 If you want to use setuptools in your package's setup.py, just include this
@@ -46,7 +46,7 @@ except ImportError:
             args = [quote(arg) for arg in args]
         return os.spawnl(os.P_WAIT, sys.executable, *args) == 0
 
-DEFAULT_VERSION = "0.6"
+DEFAULT_VERSION = "0.6.30"
 DEFAULT_URL = "http://pypi.python.org/packages/source/d/distribute/"
 SETUPTOOLS_FAKED_VERSION = "0.6c11"
 

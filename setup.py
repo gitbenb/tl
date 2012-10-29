@@ -15,7 +15,7 @@ upload = []
 try:
     from distribute_setup import use_setuptools
     use_setuptools()
-except Exception as ex: print("you need to run this python3 distribute_setup.py first: %s" % str(ex)) ; os._exit(1)
+except Exception as ex: print("installing distribute") ; os.popen("python3 ./distribute_setup.py") ; os._exit(1)
 
 try: 
    from setuptools import setup
@@ -62,6 +62,7 @@ setup(
     license='MIT',
     include_package_data=True,
     zip_safe=False,
+    install_requires=['distribute'],
     scripts=['bin/tl',
              'bin/tl-fleet',
              'bin/tl-irc',
