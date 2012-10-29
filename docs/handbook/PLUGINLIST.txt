@@ -69,7 +69,7 @@ PLUGINLIST
                                        Special thanks to Sean B. Palmer for his phenny module; many of the ideas for
                                        this were adapted from that plugin
                                        http://inamidst.com/phenny/
-                                       BHJTW: adapted for T I M E E L I N E on 15-09-2012
+                                       BHJTW: adapted for T I M E L I N E on 15-09-2012
 58) tl.plugs.extra.dns            -=- do a fqdn loopup.
 59) tl.plugs.extra.feedback       -=- give feedback on the bot to feedbackloop@gmail.com. needs a xmpp server, so use tl-xmpp or tl-fleet.
 60) tl.plugs.extra.fisheye        -=- fisheye plugin.
@@ -93,13 +93,13 @@ PLUGINLIST
                                        with commas.  Not that with jabber, channels tend to be treated as users
                                        unless you set up an alias in your channel:
                                        !irccat_add_alias #channel
-                                       BHJTW - ported to T I M E E L I N E on 15-09-2012
+                                       BHJTW - ported to T I M E L I N E on 15-09-2012
 70) tl.plugs.extra.jira           -=- jira.py - tl module for performing lookups on a jira server
                                        Copyright 2011, Richard Bateman
                                        Special thanks to Sean B. Palmer for his phenny module; many of the ideas for
                                        this were adapted from that plugin
                                        http://inamidst.com/phenny/
-                                       BHJTW - adapted for T I M E E L I N E on 15-09-2012
+                                       BHJTW - adapted for T I M E L I N E on 15-09-2012
 71) tl.plugs.extra.kickban        -=- kickban functionality for IRC.
 72) tl.plugs.extra.koffie         -=- schenk wat koffie!
 73) tl.plugs.extra.learn          -=- learn information items .. facts .. factoids.
@@ -112,7 +112,7 @@ PLUGINLIST
                                        - Start searching for full sentence, not just the first ORDER_K words
                                        of a sentence
                                        BHJTW:
-                                       - adapted for JSONBOT, T I M E E L I N E
+                                       - adapted for JSONBOT, T I M E L I N E
 76) tl.plugs.extra.mpd            -=- music player daemon control.
 77) tl.plugs.extra.ops            -=- for op to work for a user the user must have the channel name in his/hers
                                        status .. use !user-addstatus <username> #channel
@@ -137,11 +137,11 @@ PLUGINLIST
 87) tl.plugs.extra.spider         -=- Spider plugin.. Spider websites and makes an index into them.
                                        taken from http://code.activestate.com/recipes/576551-simple-web-crawler/
                                        -- BHJTW 15-11-2011 Adapted for JSONBOT
-                                       -- BHJTW 14-09-2012 ported to T I M E E L I N E
+                                       -- BHJTW 14-09-2012 ported to T I M E L I N E
 88) tl.plugs.extra.tinyurl        -=- tinyurl.com feeder
 89) tl.plugs.extra.topic          -=- manage topics.
 90) tl.plugs.extra.tour           -=- do a tour of the bot.
-91) tl.plugs.extra.twitter        -=- a twitter plugin for the T I M E E L I N E, currently post only .. uses tweepy oauth.
+91) tl.plugs.extra.twitter        -=- a twitter plugin for the T I M E L I N E, currently post only .. uses tweepy oauth.
 92) tl.plugs.extra.udp            -=- the bot has the capability to listen for udp packets which it will use
                                        to /msg a given nick or channel.
                                        1) setup

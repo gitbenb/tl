@@ -2,7 +2,7 @@
 #
 #
 
-""" a twitter plugin for the T I M E E L I N E, currently post only .. uses tweepy oauth. """
+""" a twitter plugin for the T I M E L I N E, currently post only .. uses tweepy oauth. """
 
 ## tl imports
 

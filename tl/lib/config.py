@@ -168,10 +168,10 @@ class Config(LazyDict):
             if stdout: configtmp = sys.stdout
             else: configtmp = open(filename + '.tmp', 'w')
             configtmp.write('# ===========================================================\n#\n')
-            configtmp.write("# T I M E E L I N E CONFIGURATION FILE - %s\n" % filename)
+            configtmp.write("# T I M E L I N E CONFIGURATION FILE - %s\n" % filename)
             configtmp.write("#\n")
             configtmp.write('# last changed on %s\n#\n' % time.ctime(time.time()))
-            configtmp.write("# This file contains configration data for the T I M E E L I N E.\n")
+            configtmp.write("# This file contains configration data for the T I M E L I N E.\n")
             configtmp.write('# Variables are defined by "name = json value" pairs.\n')
             configtmp.write('# Make sure to use " in strings.\n#\n')
             configtmp.write('# The bot can edit this file!.\n#\n')
@@ -277,7 +277,7 @@ class Config(LazyDict):
             self._comments["app_id"] = "# - application id used by appengine."
             self.setdefault('app_id', "tl")
             self._comments["appname"] = "# - application name as used by the bot."
-            self.setdefault('appname', "T I M E E L I N E")
+            self.setdefault('appname', "T I M E L I N E")
             self._comments["domain"] = "# - domain .. used for WAVE."
             self.setdefault('domain', "")
             self._comments["color"] = "# - color used in the webconsole."
@@ -375,11 +375,11 @@ def getmainconfig(ddir=None):
 
 irctemplate = """# =====================================================
 #
-# T I M E E L I N E CONFIGURATION FILE - 
+# T I M E L I N E CONFIGURATION FILE - 
 #
 # last changed on 
 #
-# This file contains configration data for the T I M E E L I N E.
+# This file contains configration data for the T I M E L I N E.
 # Variables are defined by "name = json value" pairs.
 # Make sure to use " in strings.
 # The bot can edit this file!
@@ -430,11 +430,11 @@ servermodes = ""
 
 sleektemplate = """# =====================================================
 #
-# T I M E E L I N E CONFIGURATION FILE - 
+# T I M E L I N E CONFIGURATION FILE - 
 #
 # last changed on 
 #
-# This file contains configration data for the T I M E E L I N E.
+# This file contains configration data for the T I M E L I N E.
 # Variables are defined by "name = json value" pairs.
 # Make sure to use " in strings.
 # The bot can edit this file!

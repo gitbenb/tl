@@ -1,7 +1,7 @@
 CONFIGURATION
 =============
 
-T I M E E L I N E uses files under the <datadir>/config dir which consists of var =
+T I M E L I N E uses files under the <datadir>/config dir which consists of var =
 "jsonstring" lines. An example of a config file:
 
 ::
@@ -114,7 +114,7 @@ The user can set these defined variable with the !udp-cfg commands:
 File creation
 ~~~~~~~~~~~~~
 
-T I M E E L I N E uses commandline options to generate the config files needed, but if
+T I M E L I N E uses commandline options to generate the config files needed, but if
 you prefer to edit the configuration files you can run tl-init that will
 create example irc and xmpp files into <datadir>/config/fleet/default-irc
 and default-sxmpp dirs. If you want more irc bots or xmpp bots you can copy

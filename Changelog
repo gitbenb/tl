@@ -1,4 +1,4 @@
-0.3   - Intrducing T I M E E L I N E (Timeline Bot)
+0.3   - Intrducing T I M E L I N E (Timeline Bot)
 0.2.2 - fix multilanguage support in case of Exception handling
       - use bot.cfg.channels instead of bot.state["joinedchannels"]
 0.2.1 - fix twitter support

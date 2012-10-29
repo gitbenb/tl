@@ -11,7 +11,7 @@ this were adapted from that plugin
 
 http://inamidst.com/phenny/
 
-BHJTW: adapted for T I M E E L I N E on 15-09-2012
+BHJTW: adapted for T I M E L I N E on 15-09-2012
 
 """
 

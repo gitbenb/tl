@@ -64,7 +64,7 @@ source_encoding = 'utf-8'
 master_doc = 'index'
 
 # General information about the project.
-project = u'T I M E E L I N E'
+project = u'T I M E L I N E'
 copyright = u'2012 FeedBackFlow'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -176,7 +176,7 @@ html_copy_source = True
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'T I M E E L I N Edoc'
+htmlhelp_basename = 'T I M E L I N Edoc'
 
 
 # Options for LaTeX output
@@ -191,7 +191,7 @@ htmlhelp_basename = 'T I M E E L I N Edoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
-  ('index', 'T I M E E L I N E.tex', ur'T I M E E L I N E Documentation',
+  ('index', 'T I M E L I N E.tex', ur'T I M E L I N E Documentation',
    ur'FeedBackFlow', 'manual'),
 ]
 

@@ -6,7 +6,7 @@
 # BSD License
 #
 # CHANGELOG
-#  BHJTW 2012-09-15 - ported to T I M E E L I N E
+#  BHJTW 2012-09-15 - ported to T I M E L I N E
 #
 #  2011-02-20
 #   * sMiLe - changed methods to be similar to the mpc commands

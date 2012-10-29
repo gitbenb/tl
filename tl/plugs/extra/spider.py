@@ -9,7 +9,7 @@
     taken from http://code.activestate.com/recipes/576551-simple-web-crawler/
 
     -- BHJTW 15-11-2011 Adapted for JSONBOT
-    -- BHJTW 14-09-2012 ported to T I M E E L I N E
+    -- BHJTW 14-09-2012 ported to T I M E L I N E
 
 """
 
@@ -17,7 +17,7 @@ __version__ = "0.2"
 __license__ = "MIT"
 __orig_author__ = "James Mills"
 __orig_author_email__ = "James Mills, James dot Mills st dotred dot com dot au"
-__author__ = "adapted for JSONBOT,T I M E E L I N E by FeedBackLoop <feedbackloop@gmail.com>"
+__author__ = "adapted for JSONBOT,T I M E L I N E by FeedBackLoop <feedbackloop@gmail.com>"
 
 ## tl imports
 

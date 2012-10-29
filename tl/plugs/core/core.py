@@ -141,7 +141,7 @@ def handle_commands(bot, ievent):
             if not plugin or plugin in plugname: result.append(cmnd)
     if result:
         result.sort()
-        if not plugin: plugin = "T I M E E L I N E"
+        if not plugin: plugin = "T I M E L I N E"
         ievent.reply('%s has the following commands: ' % plugin, result)
     else: ievent.reply('no commands found for plugin %s' % plugin)
 
@@ -488,4 +488,4 @@ def handle_stats(bot, event):
     event.reply("stats results from %s modules: " % counter, totalstats)
 
 cmnds.add("stats", handle_stats, ["OPER", "USER"])
-examples.add("stats", "show stats for all T I M E E L I N E modules/plugins or specify a module/plugin", "1) stats 2) stats rss")
+examples.add("stats", "show stats for all T I M E L I N E modules/plugins or specify a module/plugin", "1) stats 2) stats rss")

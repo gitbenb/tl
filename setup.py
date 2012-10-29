@@ -19,7 +19,7 @@ except Exception as ex: print("installing distribute") ; os.popen("python3 ./dis
 
 try: 
    from setuptools import setup
-except Exception as ex: print("i need setuptools to properly install T I M E E L I N E") ; os._exit(1)
+except Exception as ex: print("i need setuptools to properly install T I M E L I N E") ; os._exit(1)
 
 def uploadfiles(dir):
     upl = []

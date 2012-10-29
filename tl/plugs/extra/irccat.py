@@ -24,7 +24,7 @@
 
     BHJTW - 28-02-2012 .. move to irccat2.py to use the normal irccat-cfg functions
     BHJTW - 15-08-2012 .. ported to GGZBOT
-    BHJTW - 28-09-2012 .. ported to T I M E E L I N E
+    BHJTW - 28-09-2012 .. ported to T I M E L I N E
 
 """
 

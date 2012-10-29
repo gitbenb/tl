@@ -13,7 +13,7 @@ from tl.lib.examples import examples
 
 def handle_welcome(bot, event):
     """ no arguments - display welcome message. """
-    event.reply("Welcome to T I M E E L I N E - you can give this bot commands. try !help .. or !todo or !shop or !feedback .. ;]")
+    event.reply("Welcome to T I M E L I N E - you can give this bot commands. try !help .. or !todo or !shop or !feedback .. ;]")
 
 cmnds.add('welcome', handle_welcome, ['OPER', 'USER', 'GUEST'])
 examples.add('welcome', 'send welcome msg', 'welcome')
