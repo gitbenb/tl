@@ -339,6 +339,9 @@ def makexmppconfig(opts=None, botname=None, type="sleek"):
     if opts.channel:
         if not opts.channel in cfg.channels: cfg.channels.append(opts.channel) 
     else: cfg.channels = cfg.channels or []
+    if not cfg.server:
+        try: cfg.server = cfg.user.split("@")[1] 
+        except IndexError: pass
     cfg.save()
     return cfg
 

@@ -60,7 +60,7 @@ def get_eid(event):
 def get_pid(obj):
     """ make a persistent object id. """
     from tl.lib.datadir import getdatadir
-    pid = get_id() + os.sep + getdatadir() + os.sep + obj.logname
+    pid = get_id() + os.sep + obj.logname
     logging.info("pid is %s" % pid)
     return pid
 
@@ -69,6 +69,6 @@ def get_pid(obj):
 def get_cid(cfg):
     """ make a config file id. """
     from tl.lib.datadir import getdatadir
-    cid = get_id() + os.sep + getdatadir() + os.sep + cfg.filename
+    cid = get_id() + os.sep + cfg.filename
     logging.info("cid is %s" % cid)
     return cid
