@@ -6,7 +6,7 @@ PROGRAMPLUGIN
 Intro
 ~~~~~
 
-This document is here to help you program TIMELINE plugins. TIMELINE plugins
+This document is here to help you program T I M E E L I N E plugins. T I M E E L I N E plugins
 are python files that contain commands and callbacks handlers that receive a
 bot and a event as arguments and can act upon these. 
 
@@ -22,7 +22,7 @@ indexes (used to load a plugin on demand).
 Example
 ~~~~~~~
 
-Very basic example of a TIMELINE command handler is:
+Very basic example of a T I M E E L I N E command handler is:
 
 ::
 
@@ -75,7 +75,7 @@ together. Basically the data flow is like this:
     * handler does something with the event and sends a response back
     * bot can also push data to a channel, think RSS feeds
 
-For every network that TIMELINE supports there need to be both bot and event
+For every network that T I M E E L I N E supports there need to be both bot and event
 classes that support the connecting to the network and the contruction of
 the events based upon the data that is received. These classes moved into there own sub package: :ref:`tl.drivers`, so writing
 new bot-event combinations becomes easier.
@@ -83,7 +83,7 @@ new bot-event combinations becomes easier.
 Using Events
 ~~~~~~~~~~~~
 
-So events are at the core of the TIMELINE handlers that you can write for
+So events are at the core of the T I M E E L I N E handlers that you can write for
 your plugin. The basic interface of these events are defined in
 :ref:`tl.lib.eventbase`, i will summ up the most important method and
 atributes:
@@ -147,7 +147,7 @@ methods:
 
     def ready(self, finish=True):
         """ 
-            use this when you are finished handling the event. TIMELINE tried
+            use this when you are finished handling the event. T I M E E L I N E tried
             to automatically do this for you, but sometimes you need to do this
             yourself.
 

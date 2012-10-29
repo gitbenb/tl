@@ -90,7 +90,7 @@ class IRCBot(Irc):
         """ send welcome message and loop for dcc commands. """
         if not nick or not userhost: return
         try:
-            sock.send(bytes('Welcome to the TIMELINE partyline ' + nick + " ;]\n", self.encoding or "utf-8"))
+            sock.send(bytes('Welcome to the T I M E E L I N E partyline ' + nick + " ;]\n", self.encoding or "utf-8"))
             partylist = partyline.list_nicks()
             if partylist: sock.send(bytes("people on the partyline: %s\n" % ' .. '.join(partylist, self.encoding or "utf-8")))
             sock.send(bytes("control character is ! .. bot broadcast is @\n", self.encoding or "utf-8"))

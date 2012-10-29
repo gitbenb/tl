@@ -39,7 +39,7 @@ In the bot dir run the ./bin/tl command to start the console version of the bot.
     ::
 
         22:44:11 dev@done:~/dev/0.7/5$ ./bin/tl
-        TIMELINE 0.1.5 DEVELOPMENT CONSOLE
+        T I M E E L I N E 0.1.5 DEVELOPMENT CONSOLE
         >
 
 If you just want to execute 1 command on the bot, you can do that by giving
@@ -113,7 +113,7 @@ If a plugin is not responding try !plug-enable <plugin>:
     :: 
 
         23:03:05 dev@done:~/dev/0.1.5/5$ ./bin/tl
-        TIMELINE 0.1.5 DEVELOPMENT CONSOLE
+        T I M E E L I N E 0.1.5 DEVELOPMENT CONSOLE
         > !plug-enable misc
         reloading and enabling tl.plugs.core.misc
         done - plug-enable misc
@@ -125,7 +125,7 @@ otherwise try !admin-boot:
     ::
 
         23:05:46 dev@done:~/dev/0.1.5/5$ ./bin/tl
-        TIMELINE 0.1.5 DEVELOPEMENT CONSOLE
+        T I M E E L I N E 0.1.5 DEVELOPEMENT CONSOLE
         > !admin-boot
         done - admin-boot
         > 

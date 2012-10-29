@@ -1,4 +1,4 @@
-Welcome to TIMELINE
+Welcome to T I M E E L I N E
 =================
 
 the tl pakage contains the following programs:
@@ -11,14 +11,14 @@ the tl pakage contains the following programs:
     * tl-tornado - a shell web server based on tornado
     * tl-sleek - XMPP bot
 
-note: TIMELINE is in very early stage of development right now and still subject to change of protocols and API.
+note: T I M E E L I N E is in very early stage of development right now and still subject to change of protocols and API.
 
 see https://github.com/feedbackflow/tl
 
 license
 ~~~~~~~
 
-TIMELINE is free code (MIT) and can be cloned where needed.
+T I M E E L I N E is free code (MIT) and can be cloned where needed.
 
 contact the developer
 ~~~~~~~~~~~~~~~~~~~~~

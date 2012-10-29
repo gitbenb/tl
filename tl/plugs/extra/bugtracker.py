@@ -16,7 +16,7 @@
 #    will work on all installations, for example on older versions or on bugtrackers
 #    that restyled the complete layout
 #
-#    BHJTW - ported to TIMELINE on 15-09-2012
+#    BHJTW - ported to T I M E E L I N E on 15-09-2012
 #
 #
 

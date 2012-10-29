@@ -1,9 +1,9 @@
-Welcome to TIMELINE
+Welcome to T I M E E L I N E
 ================
 
 15:52:12 bart@monster:~/tl/dev/second$ t
 dbtype is sqlite
-TIMELINE 0.4 CONSOLE
+T I M E E L I N E 0.4 CONSOLE
 > ;todo
 todolist of bart: 
 
@@ -23,14 +23,14 @@ the tl pakage contains the following programs:
     * tl-tornado - a shell web server based on tornado
     * tl-sleek - XMPP bot
 
-note: TIMELINE is in very early stage of development right now and still subject to change of protocols and API.
+note: T I M E E L I N E is in very early stage of development right now and still subject to change of protocols and API.
 
 see https://github.com/feedbackflow/tl
 
 license
 ~~~~~~~
 
-TIMELINE is free code (MIT) and can be cloned where needed. 
+T I M E E L I N E is free code (MIT) and can be cloned where needed. 
 
 contact the developer
 ~~~~~~~~~~~~~~~~~~~~~
@@ -91,7 +91,7 @@ In the bot dir run the ./bin/tl command to start the console version of the bot.
     ::
 
         22:44:11 dev@done:~/dev/0.7/5$ ./bin/tl
-        TIMELINE 0.1.5 DEVELOPMENT CONSOLE
+        T I M E E L I N E 0.1.5 DEVELOPMENT CONSOLE
         >
 
 If you just want to execute 1 command on the bot, you can do that by giving
@@ -165,7 +165,7 @@ If a plugin is not responding try !plug-enable <plugin>:
     :: 
 
         23:03:05 dev@done:~/dev/0.1.5/5$ ./bin/tl
-        TIMELINE 0.1.5 DEVELOPMENT CONSOLE
+        T I M E E L I N E 0.1.5 DEVELOPMENT CONSOLE
         > !plug-enable misc
         reloading and enabling tl.plugs.core.misc
         done - plug-enable misc
@@ -177,7 +177,7 @@ otherwise try !admin-boot:
     ::
 
         23:05:46 dev@done:~/dev/0.1.5/5$ ./bin/tl
-        TIMELINE 0.1.5 DEVELOPEMENT CONSOLE
+        T I M E E L I N E 0.1.5 DEVELOPEMENT CONSOLE
         > !admin-boot
         done - admin-boot
         > 

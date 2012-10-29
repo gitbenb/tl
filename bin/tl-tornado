@@ -216,9 +216,9 @@ class LoginHandler(BaseHandler):
         if 'localhost' in host: url = "http://%s" % host
         else: url = "http://%s" % host
         logging.warn("using %s" % url)
-        t = {'url': url, 'appname': "TIMELINE", 'version': getversion(), 'who': "not logged in yet", 'host': host, 'color': "#AD6666", "logouturl": 'logout', "loginurl": "login"}
+        t = {'url': url, 'appname': "T I M E E L I N E", 'version': getversion(), 'who': "not logged in yet", 'host': host, 'color': "#AD6666", "logouturl": 'logout', "loginurl": "login"}
         logging.warn(t)
-        self.render(ddir + os.sep + "templates" + os.sep + "login.html", title="TIMELINE", **t)
+        self.render(ddir + os.sep + "templates" + os.sep + "login.html", title="T I M E E L I N E", **t)
 
 class LogoutHandler(BaseHandler):
 
@@ -228,9 +228,9 @@ class LogoutHandler(BaseHandler):
         if 'localhost' in host: url = "http://%s" % host
         else: url = "http://%s" % host
         logging.warn("using %s" % url)
-        t = {'url': url, 'appname': "TIMELINE", 'version': getversion(), 'who': "not logged in yet", 'host': host, 'color': "#C48B55", "logouturl": 'logout', "loginurl": "login"}
+        t = {'url': url, 'appname': "T I M E E L I N E", 'version': getversion(), 'who': "not logged in yet", 'host': host, 'color': "#C48B55", "logouturl": 'logout', "loginurl": "login"}
         logging.warn(t)
-        self.render(ddir + os.sep + "templates" + os.sep + "login.html", title="TIMELINE", **t)
+        self.render(ddir + os.sep + "templates" + os.sep + "login.html", title="T I M E E L I N E", **t)
 
 
 class DispatchHandler(BaseHandler):
@@ -251,8 +251,8 @@ class DispatchHandler(BaseHandler):
                 if opts.ssl: url = "wss://%s/websocket" % host
                 else: url = "ws://%s/websocket" % host
                 logging.warn("using url %s" % url)
-                t = {'validate_cert': False, 'url': url, 'appname': "TIMELINE", 'version': getversion(), 'who': user, 'host': host, 'color': "#C48B44", "logouturl": "/logout", "loginurl": "/login"}
-                self.render(ddir + os.sep + "templates" + os.sep + "console.html", title="TIMELINE", **t)
+                t = {'validate_cert': False, 'url': url, 'appname': "T I M E E L I N E", 'version': getversion(), 'who': user, 'host': host, 'color': "#C48B44", "logouturl": "/logout", "loginurl": "/login"}
+                self.render(ddir + os.sep + "templates" + os.sep + "console.html", title="T I M E E L I N E", **t)
         except Exception as ex:
             handle_exception()
             if opts.bork: os._exit(1)
@@ -294,8 +294,8 @@ class DemoHandler(BaseHandler):
             if user:
                 url = "ws://%s/websocket" % host
                 logging.warn("using %s" % url)
-                t = {"url": url, 'appname': "TIMELINE DEMO", 'version': getversion(), 'who': user, 'host': host, 'color': "#C48B11", "logouturl": 'logout', "loginurl": "login"}
-                self.render(ddir + os.sep + "templates" + os.sep + "console.html", title="TIMELINE", **t)
+                t = {"url": url, 'appname': "T I M E E L I N E DEMO", 'version': getversion(), 'who': user, 'host': host, 'color': "#C48B11", "logouturl": 'logout', "loginurl": "login"}
+                self.render(ddir + os.sep + "templates" + os.sep + "console.html", title="T I M E E L I N E", **t)
         except Exception as ex:
             handle_exception()
 
@@ -315,8 +315,8 @@ class WarpHandler(BaseHandler):
                 if opts.ssl: url = "wss://%s/websocket" % host
                 else: url = "ws://%s/websocket" % host
                 logging.warn("using url %s" % url)
-                t = {"url": url, 'appname': "TIMELINE WARP !", 'version': getversion(), 'who': user, 'host': host, 'color': "#C48B11", "logouturl": 'logout', "loginurl": "login" }
-                self.render(ddir + os.sep + "templates" + os.sep + "warp.html", title="TIMELINE", **t)
+                t = {"url": url, 'appname': "T I M E E L I N E WARP !", 'version': getversion(), 'who': user, 'host': host, 'color': "#C48B11", "logouturl": 'logout', "loginurl": "login" }
+                self.render(ddir + os.sep + "templates" + os.sep + "warp.html", title="T I M E E L I N E", **t)
         except Exception as ex:
             handle_exception()
 

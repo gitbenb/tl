@@ -15,7 +15,7 @@ import time
 
 ## defines
 
-eventlist = ["!welcome", "TIMELINE provides functionality through the use of plugins, you can use the !list comamnd to see what plugins are available =>", "!list"]
+eventlist = ["!welcome", "T I M E E L I N E provides functionality through the use of plugins, you can use the !list comamnd to see what plugins are available =>", "!list"]
 
 ## tour command
 

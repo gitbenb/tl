@@ -15,7 +15,7 @@ TODO:
       of a sentence
 
 BHJTW:
-    - adapted for JSONBOT, TIMELINE
+    - adapted for JSONBOT, T I M E E L I N E
 
 """
 
