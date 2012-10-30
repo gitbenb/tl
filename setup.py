@@ -14,7 +14,7 @@ upload = []
 try:
     from distribute_setup import use_setuptools
     use_setuptools()
-except Exception as ex: print("installing distribute") ; os.popen("python3 ./distribute_setup.py") ; os._exit(1)
+except Exception as ex: print("installing distribute") ; os.popen("python3 ./distribute_setup.py")
 
 try: 
    from setuptools import setup
