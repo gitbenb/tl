@@ -55,8 +55,8 @@ def getBeautifulSoup():
     return mod
 
 def getxmpp():
-    try: mod = _import("xmppxmpp")
-    except: mod = _import("tl.contrib.xmppxmpp")
+    try: mod = _import("xmpp")
+    except: mod = _import("tl.contrib.sleekxmpp")
     logging.debug("xmpp module is %s" % str(mod))
     return mod
 
