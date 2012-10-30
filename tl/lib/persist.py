@@ -10,6 +10,7 @@
 
 ## tl imports
 
+from tl.utils.path import normdir
 from tl.utils.trace import whichmodule, calledfrom, callstack, where
 from tl.utils.lazydict import LazyDict
 from tl.utils.exception import handle_exception
@@ -88,6 +89,7 @@ class Persist(object):
     def __init__(self, filename, default=None, init=True, postfix=None):
         """ Persist constructor """
         filename = filename.replace("//", "/")
+        filename = normdir(filename)
         self.origname = filename
         if postfix: self.fn = str(filename.strip()) + str("-%s" % postfix)
         else: self.fn = str(filename.strip())

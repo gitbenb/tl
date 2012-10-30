@@ -14,6 +14,7 @@ from .datadir import getdatadir
 from .errors import CantSaveConfig, NoSuchFile
 from tl.utils.locking import lockdec
 from tl.id import get_cid
+from tl.utils.path import normdir
 
 ## simplejson imports
 
@@ -54,6 +55,7 @@ class Config(LazyDict):
 
     def __init__(self, filename, verbose=False, input={}, ddir=None, nolog=False, *args, **kwargs):
         assert filename
+        if ddir: ddir = normdir(ddir)
         if input: LazyDict.__init__(self, input, *args, **kwargs)
         else: LazyDict.__init__(self, *args, **kwargs)
         self.filename = filename
