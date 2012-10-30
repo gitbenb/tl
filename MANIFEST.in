@@ -1,6 +1,7 @@
 include           MANIFEST.in
 include           Changelog
 include 	  distribute_setup.py
+include 	  distribute-0.6.30.tar.gz
 recursive-include tl/examples *
 recursive-include tl/data *
 recursive-include tl/contrib/natural/locale *
