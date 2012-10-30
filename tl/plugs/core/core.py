@@ -173,7 +173,7 @@ def handle_version(bot, ievent):
     from tl.version import getversion
     version = getversion(bot.type.upper())
     cfg = getmainconfig()
-    if cfg.dbenable: version += " - " + cfg.dbtype.upper()
+    if cfg.dbenable: version += " " + cfg.dbtype.upper()
     tip = None
     if ievent.rest and ievent.rest == "repo":
         try: 
@@ -182,7 +182,7 @@ def handle_version(bot, ievent):
             ctx = context.changectx(repository)
             tip = str(ctx.rev())
         except: tip = None
-    if tip: version2 = version + " - HG " + tip
+    if tip: version2 = version + " HG " + tip
     else: version2 = version
     ievent.reply(version2)
 

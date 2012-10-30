@@ -1,11 +1,20 @@
-Welcome to T I M E L I N E
-================
+Welcome    to   T I M E L I N E
+===============================
 
-15:52:12 bart@monster:~/tl/dev/second$ t
-dbtype is sqlite
-T I M E L I N E 0.4 CONSOLE
-> ;todo
-todolist of bart: 
+    T I M E L I N E (tl) is a program that is aimed a people that need to register their activities on a day. 
+    Console, IRC and XMPP bots are provided to allow the user to keep track of activities on the day.
+    This is a work in progress, first aim is to get the basic functionality running and allow for day/week/month analysis of the activity data.
+
+
+T O D O
+~~~~~~~
+
+    15:52:12 bart@monster:~/tl/dev/second$ ./bin/tl
+    T I M E L I N E
+    CONSOLE VERSION 0.4.1
+
+    > ;todo
+    todolist of bart: 
 
     1) filesystem for tl-bots .. map urls to files on fs datadir .. use ~/tl-export/.tl as entrypoint for a datadir copy of ~/.tl
     2) build a global monitoring klachten lijst registratie hier op
@@ -15,25 +24,27 @@ todolist of bart:
     6) also add a log to Persist that will log the changes to /home/bart/jt-changes/datadir
 
 
-the tl pakage contains the following programs:
+C O N T E N T
+~~~~~~~~~~~~~
+
+    the tl pakage contains the following programs:
 
     * tl - console bot
     * tl-fleet - mix IRC and XMPP bots
     * tl-irc - IRC bot
-    * tl-tornado - a shell web server based on tornado
     * tl-xmpp - XMPP bot
 
-note: T I M E L I N E is in very early stage of development right now and still subject to change of protocols and API.
+    note: T I M E L I N E is in a early stage of development right now and still subject to change of protocols and API.
 
-see https://github.com/feedbackflow/tl
+    see https://github.com/feedbackflow/tl
 
-license
-~~~~~~~
+L I C E N S E
+~~~~~~~~~~~~~
 
-T I M E L I N E is free code (MIT) and can be cloned where needed. 
+    T I M E L I N E is free code (MIT) and can be cloned where needed. 
 
-contact the developer
-~~~~~~~~~~~~~~~~~~~~~
+C O N T A C T
+~~~~~~~~~~~~~
 
     * email: feedbackflow@gmail.com
     * jabber/xmpp: feedbackflow@gmail.com
@@ -41,61 +52,57 @@ contact the developer
     * twitter: http://twitter.com/feedbackflow
 
 
-running a development version of the bot
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D E V E L O P M E N T
+~~~~~~~~~~~~~~~~~~~~~
 
-first checkout the main bot from the mercurial repository
+    first checkout the main bot from the mercurial repository
 
     git clone https://github.com/feedbackflow/tl
 
-now you can run the programs in the bin directory with the
-./bin/<program>  command. try ./bin/tl for the console app
-.. _handbook-introduction:
+    now you can run the programs in the bin directory with the
+    ./bin/<program>  command. try ./bin/tl for the console app
 
+S O U R C E
+~~~~~~~~~~~
 
-INTRODUCTION
-============
-
-Getting Started
-~~~~~~~~~~~~~~~
-
-Get the latest tarball from:
+    Get the latest tarball from:
 
     ::
 
         https://github.com/feedbackflow/tl/downloads
 
-Or install from github:
+    Or install from github:
 
     ::
 
         git clone https://github.com/feedbackflow/tl.git
     
 
-Configuration
-~~~~~~~~~~~~~
-
-Data and configuratiion files can be found in the datadir which defaults to ~/.tl (or
-another directory if the -d option is used). A bit further on i will give some basic examples.
-
-Configuration files are written on startup of tl. Use the --help option to see what other options are available.
-
-Look for the config/fleet directory for bot configuration files.
-
-
-Console bot
+C O N F I G
 ~~~~~~~~~~~
 
-In the bot dir run the ./bin/tl command to start the console version of the bot.
+    Data and configuratiion files can be found in the datadir which defaults to ~/.tl (or
+    another directory if the -d option is used). A bit further on i will give some basic examples.
+
+    Configuration files are written on startup of tl. Use the --help option to see what other options are available.
+
+    Look for the config/fleet directory for bot configuration files.
+
+
+C O N S O L E
+~~~~~~~~~~~~~
+
+    In the bot dir run the ./bin/tl command to start the console version of the bot.
 
     ::
 
         22:44:11 dev@done:~/dev/0.7/5$ ./bin/tl
-        T I M E L I N E 0.1.5 DEVELOPMENT CONSOLE
+        T I M E L I N E
+        CONSOLE VERSION 0.4.1
         >
 
-If you just want to execute 1 command on the bot, you can do that by giving
-it as an argument:
+    If you just want to execute 1 command on the bot, you can do that by giving
+    it as an argument:
 
     ::
 
@@ -109,47 +116,47 @@ it as an argument:
         welcome, wikipedia, xmpp
  
 
-IRC bot
-~~~~~~~
+I R C
+~~~~~
 
-Run the following to make the bot connect to an IRC server:
+    Run the following to make the bot connect to an IRC server:
 
     ::
 
         ./bin/tl-irc -o <userhost of owner> -s <server> -c \<channel>
 
-A configuration file will be generated from the command line opions. If you
-already have the configuration files (generated by tl-init) you can just use (without any options):
+    A configuration file will be generated from the command line opions. If you
+    already have the configuration files (generated by tl-init) you can just use (without any options):
 
     ::
 
         ./bin/tl-irc
 
 
-XMPP bot
-~~~~~~~~
+X M P P
+~~~~~~~
 
-Run the following to make the bot connect to an Jabber server:
+    Run the following to make the bot connect to an Jabber server:
 
     ::
 
         ./bin/tl-xmpp -o <owner JID> -u <bot JID> -p <password> [-c <conference>] [-s <server>]
 
-Or when configuration files already exist, just run the bot without arguments:
+    Or when configuration files already exist, just run the bot without arguments:
 
     ::
 
         ./bin/tl-xmpp
 
-Conference and server options are optional. Server is take from the -u
-option if not provided as a seperate option. 
+    Conference and server options are optional. Server is take from the -u
+    option if not provided as a seperate option. 
 
 
-Plugins
-~~~~~~~
+P L U G I N S
+~~~~~~~~~~~~~
 
-To see what plugins are available use the !list command. Use !help <plugin>
-to get help on a plugin. 
+    To see what plugins are available use the !list command. Use !help <plugin>
+    to get help on a plugin. 
 
     ::
 
@@ -160,7 +167,7 @@ to get help on a plugin.
 
 
 
-If a plugin is not responding try !plug-enable <plugin>:
+    If a plugin is not responding try !plug-enable <plugin>:
 
     :: 
 
@@ -172,7 +179,7 @@ If a plugin is not responding try !plug-enable <plugin>:
         > 
 
 
-otherwise try !admin-boot:
+    otherwise try !admin-boot:
 
     ::
 
@@ -183,9 +190,9 @@ otherwise try !admin-boot:
         > 
 
 
-this will regenerate the callbacks and command indexes. 
+    this will regenerate the callbacks and command indexes. 
 
-You can also use !apro <search> to search for commands:
+    You can also use !apro <search> to search for commands:
 
     ::
 
@@ -193,7 +200,7 @@ You can also use !apro <search> to search for commands:
         commands matching wiki: wikipedia
 
 
-Commandline Help
-~~~~~~~~~~~~~~~~
+H E L P
+~~~~~~~
 
-All the programs have a --help option that shows a help page describing the command line options of the program.
+    All the programs have a --help option that shows a help page describing the command line options of the program.

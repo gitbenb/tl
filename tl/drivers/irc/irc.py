@@ -370,6 +370,7 @@ class Irc(BotBase):
     def normalize(self, what):
         txt = strippedtxt(what, ["\001", "\002", "\003"])
         txt = txt.replace("<b>", "\002")
+        txt = txt.replace("\n", " ")
         txt = txt.replace("</b>", "\002")
         txt = txt.replace("<i>", "\0032")
         txt = txt.replace("</i>", "\003")
