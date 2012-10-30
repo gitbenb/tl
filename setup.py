@@ -7,10 +7,9 @@ target = "tl"
 import os
 import sys
 
-if sys.version_info.major < 3: print("you need to run this python3 distribute_setup.py first") ; os._exit(1)
+if sys.version_info.major < 3: print("you need to run T I M E L I N E with python3") ; os._exit(1)
 
 upload = []
-
 
 try:
     from distribute_setup import use_setuptools
