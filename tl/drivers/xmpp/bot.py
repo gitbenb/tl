@@ -33,6 +33,7 @@ class SleekBot(BotBase):
         if not cfg.user: raise NoUserProvided("please make sure the user config variable is set in %s (or use -u)"  % cfg.cfile)
         BotBase.__init__(self, cfg, *args, **kwargs)
         self.type = "xmpp"
+        self.jids = {}
         self.xmpp = sleekxmpp.ClientXMPP(cfg.user, cfg.password)
         self.xmpp.add_event_handler("session_start", self.session_start)
         self.xmpp.add_event_handler("message", self.handle_message)
@@ -102,7 +103,6 @@ class SleekBot(BotBase):
         else: outtype = "chat"
         target = printto
         txt = self.normalize(txt)
-        #txt = stripcolor(txt)
         repl = Message(event)
         repl.to = target
         repl.type = (event and event.type) or "chat"
@@ -130,9 +130,6 @@ class SleekBot(BotBase):
             return
         jid = None
         m.origjid = m.jid
-        #if self.cfg.user in m.jid or (m.groupchat and self.cfg.nick == m.nick):
-        #    logging.error("%s - message to self .. ignoring" % self.cfg.name)
-        #    return 0
         if self.cfg.fulljids and not m.msg:
             utarget = self.userhosts.get(m.nick)
             if utarget: m.userhost = m.jid = m.auth = stripped(utarget)
@@ -182,4 +179,4 @@ class SleekBot(BotBase):
                     logging.debug('%s - removed %s jid' % (self.cfg.name, p.nick))
                 except KeyError: pass
             self.put(p)
-        except Exception as ex: logging.error(str(ex))
+        except Exception as ex: handle_exception()

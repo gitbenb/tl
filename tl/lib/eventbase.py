@@ -370,7 +370,7 @@ class EventBase(LazyDict):
             if subelement == "thread": continue
             if subelement == "error": continue
             try: data = res[subelement]
-            except KeyError: pass
+            except KeyError: continue
             if data:
                 try:
                     main += "<%s>%s</%s>" % (subelement, escape(data), subelement)

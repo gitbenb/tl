@@ -69,8 +69,8 @@ class Message(EventBase):
         self.origchannel = self.channel
         self.nick = self.resource
         self.ruserhost = self.jid
-        self.userhost = self.jid
         self.stripped = self.jid.split('/')[0]
+        self.userhost = self.stripped
         self.printto = self.channel
         try: self.txt = str(data['body']) ; self.nodispatch = False
         except AttributeError: self.txt = "" ; self.nodispatch = True

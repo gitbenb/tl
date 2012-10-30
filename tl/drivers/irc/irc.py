@@ -368,8 +368,8 @@ class Irc(BotBase):
             self.say(i, txt, speed=1)
 
     def normalize(self, what):
-        txt = txt.replace("\n", " ")
-        txt = strippedtxt(what, ["\001", "\002", "\003"])
+        txt = what.replace("\n", " ")
+        txt = strippedtxt(txt, ["\001", "\002", "\003"])
         txt = txt.replace("<b>", "\002")
         txt = txt.replace("</b>", "\002")
         txt = txt.replace("<i>", "\0032")
