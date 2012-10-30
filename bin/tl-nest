@@ -17,6 +17,9 @@ parser.add_option("-f", "--file",  type='string', default=False, dest='file', he
 opts, args = parser.parse_args()
 opts.args = args
 
+if not opts.file: target = "dist" + os.sep + "tl-%s.tar.gz" % __version__
+else: target = opts.file
+
 installdir = 'tlnest'
 
 if not os.path.isdir(installdir):
@@ -33,9 +36,8 @@ try:
     use_setuptools()
     from setuptools.command.easy_install import main
     import pkg_resources
-except ImportError as ex: print("setuptools is needed to use tl-nest: %s" %
-str(ex)) ;  os._exit(1)
-runstring = '--install-dir %s -a -U %s' % (installdir, opts.file)
+except ImportError as ex: print("setuptools is needed to use tl-nest: %s" % str(ex)) ;  os._exit(1)
+runstring = '--install-dir %s -a -U %s' % (installdir, target)
 main(runstring.split())
 os.chdir(installdir)
 print('done')
