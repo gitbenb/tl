@@ -283,9 +283,8 @@ class Fleet(Persist):
         for bot in bots:
             logging.debug("%s bot type is %s" % (bot.cfg.name, bot.type))
             if bot.type not in exclude: todo.append(bot) ; done.append(bot.cfg.name)
-        thr = start_new_thread(self.startall, (todo, ))
-        logging.warn("fleet bots are %s - waiting for them to start .." % ", ".join(done))
-        thr.join(30)
+        logging.warn("booting fleet bot %s" % ", ".join(done))
+        self.startall(todo)
 
     def startall(self, bots, usethreads=True):
         threads = []
@@ -296,9 +295,7 @@ class Fleet(Persist):
             try: bot.boot()
             except Excepton as ex: handle_exception()
             time.sleep(1)
-        if usethreads:
-           for t in threads: t.join(15)
-        time.sleep(5)
+        for t in threads: t.join(15)
         self.startok.set()
 
     def resume(self, sessionfile, exclude=[]):

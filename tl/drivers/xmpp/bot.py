@@ -65,6 +65,7 @@ class SleekBot(BotBase):
         logging.warn("session started")
         self.xmpp.send_presence()
         start_new_thread(self.joinchannels, ())
+        self.connectok.set()
         
     def exception(self, ex): logging.error(str(ex))
 

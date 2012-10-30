@@ -4,6 +4,10 @@
 
 """ uid helper functions. """
 
+## tl imports
+
+from tl.utils.path import normdir
+
 ## basic imports
 
 import logging
@@ -26,7 +30,7 @@ def get_id():
     if not host: host = resolve_host()
     dstr = getdatadirstr()
     if dstr.startswith("/"): dstr = dstr[1:]
-    return "%s@%s/%s" % (user, host, dstr)
+    return "%s@%s/%s" % (user, host, normdir(dstr))
 
 ## get_bid function
 
@@ -59,7 +63,6 @@ def get_eid(event):
 
 def get_pid(obj):
     """ make a persistent object id. """
-    from tl.lib.datadir import getdatadir
     pid = get_id() + os.sep + obj.logname
     logging.info("pid is %s" % pid)
     return pid
@@ -68,7 +71,6 @@ def get_pid(obj):
 
 def get_cid(cfg):
     """ make a config file id. """
-    from tl.lib.datadir import getdatadir
     cid = get_id() + os.sep + cfg.filename
     logging.info("cid is %s" % cid)
     return cid

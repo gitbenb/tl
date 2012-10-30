@@ -71,7 +71,7 @@ globaloptslist = [
                 ('', '--popen', "store_true", False, 'allowpopen', "allow plugins that use os.popen (spawn a new shell) - DANGER !!")
            ]
 
-## makeopts function
+## core_opts function
 
 core_opts = [
                 ('', '--nourl', "store_true", False, 'nourl', "disable geturl functionality"),
@@ -84,10 +84,12 @@ core_opts = [
                 ('', '--exceptions', "store_true", False, 'exceptions', "show exceptions when terminating the bot"),
                 ('', '--popen', "store_true", False, 'allowpopen', "allow plugins that use os.popen (spawn a new shell) - DANGER !!"),
                 ('', '--fleet', "store_true", False, 'fleet', "start the fleet"),
+                ('-r', '--resume', 'string', "", 'doresume', "resume the bot from the folder specified"),
             ]
 
+## bot_opts
+
 bot_opts = [
-                ('-r', '--resume', 'string', "", 'doresume', "resume the bot from the folder specified"),
                 ('-e', '--enable', 'store_true', False, 'enable', "enable bot for fleet use"),
                 ('-s', '--server', 'string', "", 'server',  "server to connect to (irc)"),
                 ('-c', '--channel', 'string', "", 'channel',  "channel to join"),
@@ -97,11 +99,15 @@ bot_opts = [
                 ('-n', '--nick', 'string', "", 'nick',  "nick of the bot"),
            ]
 
+## api_opts
+
 api_opts = [
 
                 ('-a', '--api', 'store_true', False, 'api',  "enable api server"),
                 ('', '--apiport', 'string', "", 'apiport', "port on which the api server will run"),
            ]
+
+## irc_opts
 
 irc_opts = [
                ('', '--ssl', 'store_true', False, 'ssl',  "use ssl"),
@@ -110,14 +116,21 @@ irc_opts = [
                ('-u', '--username', "string", False, 'username', "user to auth to server with")
            ]
 
+## xmpp_opts
+
 xmpp_opts = [
                 ('-u', '--user', 'string', False, 'user',  "JID of the bot"),
                 ('', '--openfire', 'string', False, 'openfire',  "enable openfire mode")
             ]
 
+## fleet_opts
+
 fleet_opts = [
+               ('', '--name', 'string', "", 'name', "bot's name"),
                ('', '--all', 'store_true', False, 'all', "show available fleet bots")
            ]
+
+## console_opts
 
 console_opts = [
                ]
@@ -146,14 +159,12 @@ def make_opts(args, optslist=[], parser=None):
     else: opts, args = parser.parse_args()
     for option in globaloptslist:
         type, default, dest, help = option[2:]
-        try:
-            opts[dest] =  default
+        try: opts[dest] =  default
         except TypeError: continue
     opts.args = args
     for option in optslist:
         type, default, dest, help = option[2:]
-        try:
-            opts[dest] =  default
+        try: opts[dest] =  default
         except TypeError: continue
     opts.args = args
     global curopts
@@ -168,7 +179,7 @@ def do_opts(type="console", args=[], *argslist, **kwargs):
     if type != "console": print("T I M E L I N E\n%s" % getversion(type.upper()))
     cfg = None
     if type == "irc": target = api_opts + bot_opts + irc_opts
-    elif type in ["xmpp", ]: target = api_opts + bot_opts + xmpp_opts
+    elif type == "xmpp": target = api_opts + bot_opts + xmpp_opts
     elif type == "fleet": target = api_opts + fleet_opts
     elif type == "init": target = []
     elif type == "console": target = bot_opts + console_opts
@@ -218,13 +229,10 @@ def makedefaultconfig(opts, name):
     cfg.type = "default"
     cfg.name = name
     if not cfg.owner: cfg.owner = []
-    from tl.utils.uid import get_uid
-    cfg.userid = userid = get_uid()
-    if userid not in cfg.owner: cfg.owner.append(userid) ; cfg.save()
-    if opts and opts.loglevel: cfg.loglevel = opts.loglevel
+    if opts.owner not in cfg.owner: cfg.owner.append(opts.owner) ; cfg.save()
+    if opts.loglevel: cfg.loglevel = opts.loglevel
     else: cfg.loglevel = cfg.loglevel or "error"
     return cfg
-
 
 ## makeconsoleconfig function
 

@@ -39,6 +39,7 @@ import tl
 
 from tl.lib.fleet import getfleet
 fleet = getfleet(opts.datadir)
+if not fleet.avail(): logging.error("fleet - no bots found.") ; os._exit(1)
 if opts.all:
     avail = fleet.avail()
     if avail: sys.stdout.write("available bots: " + ", ".join(avail) + ".\n")
@@ -73,8 +74,7 @@ def doresume():
 thr = None
 
 if opts.doresume: start_new_thread(doresume, ())
-else: fleet.boot(opts.args, ["tornado", "console"])
-if not fleet.bots: logging.error("fleet - no bots found.") ; os._exit(1)
+else: start_new_thread(fleet.boot, (opts.args, ["tornado", "console"]))
 
 if opts.api:
     from jsb.api import server
