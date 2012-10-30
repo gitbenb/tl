@@ -52,7 +52,7 @@ if opts.channel and not opts.channel in bot.cfg.channels:
     bot.cfg.save()
 
 try:
-    logging.warn("starting xmppxmpp bot with user %s" % bot.cfg.user)
+    logging.warn("starting sleekxmpp bot with user %s" % bot.cfg.user)
     start_new_thread(bot.boot, ())
 except KeyboardInterrupt: globalshutdown()
 except: handle_exception() ; globalshutdown()

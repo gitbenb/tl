@@ -2,13 +2,13 @@
 #
 #
 
-""" XMPP bot build on xmppxmpp. """
+""" XMPP bot build on sleekxmpp. """
 
 ## boty imports
 
 from tl.imports import getxmpp
 
-xmppxmpp = getxmpp()
+sleekxmpp = getxmpp()
 
 ## tl imports
 
@@ -33,7 +33,7 @@ class SleekBot(BotBase):
         if not cfg.user: raise NoUserProvided("please make sure the user config variable is set in %s (or use -u)"  % cfg.cfile)
         BotBase.__init__(self, cfg, *args, **kwargs)
         self.type = "xmpp"
-        self.xmpp = xmppxmpp.ClientXMPP(cfg.user, cfg.password)
+        self.xmpp = sleekxmpp.ClientXMPP(cfg.user, cfg.password)
         self.xmpp.add_event_handler("session_start", self.session_start)
         self.xmpp.add_event_handler("message", self.handle_message)
         self.xmpp.add_event_handler('disconnected', self.handle_disconnected)

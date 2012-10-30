@@ -8,18 +8,34 @@
 
 import sys
 import os
+import os.path
 import shutil
+import errno
+
+## defines
+
+try: homedir = os.path.abspath(os.path.expanduser("~"))
+except: homedir = os.getcwd()
+newdir = homedir + os.sep + "tlnew"
+source = homedir + os.sep + "tlnew" + os.sep + "new"
+
+ignore = ["__pycache__", "contrib", "data", "static", "sed", "tlnest", "dist", "egg", "tar.gz"]
+ignorestart = ["."]
 
 ## arguments
 
-try:
-    source = sys.argv[1]
-    sedstring = sys.argv[2]
+try: sedstring = sys.argv[1]
 except IndexError:
-    print("tl-sed <dir> <sedstring>")
+    print("tl-sed <sedstring>")
+    os._exit(1)
+
+if not sedstring:
+    print("tl-sed <sedstring>")
     os._exit(1)
 
 print("STARTING")
+
+if not os.path.isdir(newdir): os.mkdir(newdir)
 
 ## gethighest function
 
@@ -28,13 +44,13 @@ def gethighest(ddir, ffile):
     highest = 0
     for i in os.listdir(ddir):
         if os.path.isdir(ddir + os.sep + i) and ffile in i:
-            try: seqnr = i.split('.')[2]
+            try: seqnr = i.split('.')[1]
             except IndexError: continue
             try:
                 if int(seqnr) > highest: highest = int(seqnr)  
             except ValueError: pass
     ffile += '.' + str(highest + 1)
-    return ffile   
+    return ddir + os.sep + ffile   
 
 ## dosed function
 
@@ -43,12 +59,17 @@ def dosed(filename, sedstring):
     f = open(filename, 'r')
     tmp = filename + '.tmp'
     fout = open(tmp, 'w')
-    seds = sedstring.split('/')
-    fr = seds[1].replace('\\', '')
-    to = seds[2].replace('\\', '')
     try:
-        for line in f: l = line.replace(fr,to) ; fout.write(l)
-    finally: fout.flush() ; fout.close()
+        seds = sedstring.split('/')
+        fr = seds[1].replace('\\', '')
+        to = seds[2].replace('\\', '')
+        for line in f:
+            l = line
+            l = l.replace(fr,to)
+            fout.write(l)
+    finally:
+        fout.flush()
+        fout.close()
     try: os.rename(tmp, filename)
     except WindowsError: os.remove(filename) ; os.rename(tmp, filename)
 
@@ -58,19 +79,33 @@ def doreplace(ddir, sedstring):
     """ loop over the directories copying and sedding the files. """
     print("dir: %s: sedstring: %s" % (ddir, sedstring))
     for f in os.listdir(ddir):
-        try: print("sedding %s" % f) ; dosed(ddir + os.sep + f, sedstring)
-        except IOError as ex:
-            if 'Is a dir' in str(ex): doreplace(ddir + os.sep + f, sedstring)
-            else: print("ERROR %s - %s" % (ddir + os.sep + f, str(ex)))
+        donext = False
+        path = ddir + os.sep + f
+        for i in ignore:
+            if i in f: print("ignoring %s" % f) ; donext = True ; break
+        for sw in ignorestart:
+            if f.startswith(sw): print("ignoring %s" % f) ; donext = True ; break
+        if donext: continue
+        if os.path.isdir(path): doreplace(path, sedstring) ; continue
+        dosed(path, sedstring)
+        print("done %s" % path)
 
 ## backup the old dir
 
-target = gethighest(os.getcwd(), source + ".sed")
+target = gethighest(newdir, "new")
 print("COPYING %s TO %s" % (source, target))
 try: shutil.copytree(source, target)
-except OSError: print("can't copy %s to %s" % (source, target)) ; os._exit(1)
+except OSError: pass
 
-## start the thing
+try: shutil.rmtree(source)
+except: pass
 
-doreplace(target, sedstring)
+## init "new" directory
+
+try: shutil.copytree(os.getcwd(), source)
+except OSError: print("can't copy %s to %s" % (os.getcwd(), newdir)) ; os._exit(1)
+
+## do the actual sed thing on the new directory
+
+doreplace(source, sedstring)
 print("DONE")

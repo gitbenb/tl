@@ -1,5 +1,3 @@
-rm -fR $1
-git clone ~/out/tl $1
-./tl-sed $1 "$2" 
-cd new/bin
+./bin/tl-sed "$1" 
+cd ~/tlnew/new/bin
 chmod +x *
