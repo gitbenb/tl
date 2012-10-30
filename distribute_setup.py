@@ -46,7 +46,7 @@ except ImportError:
             args = [quote(arg) for arg in args]
         return os.spawnl(os.P_WAIT, sys.executable, *args) == 0
 
-DEFAULT_VERSION = "0.6.30"
+DEFAULT_VERSION = "0.6.28"
 DEFAULT_URL = "http://pypi.python.org/packages/source/d/distribute/"
 SETUPTOOLS_FAKED_VERSION = "0.6c11"
 
@@ -144,7 +144,8 @@ def use_setuptools(version=DEFAULT_VERSION, download_base=DEFAULT_URL,
         except ImportError:
             return _do_download(version, download_base, to_dir, download_delay)
         try:
-            pkg_resources.require("distribute>=" + version)
+            #pkg_resources.require("distribute>=" + version)
+            pkg_resources.require("distribute")
             return
         except pkg_resources.VersionConflict:
             e = sys.exc_info()[1]
