@@ -77,7 +77,7 @@ class ConsoleBot(BotBase):
     def startshell(self, connect=True):
         """ start the console bot. """
         self.start(False)
-        print(getversion("CONSOLE"))
+        print("T I M E L I N E\n%s" % getversion("CONSOLE"))
         while not self.stopped: 
             try: 
                 mainhandler.handle_one()

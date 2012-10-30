@@ -111,7 +111,8 @@ irc_opts = [
            ]
 
 xmpp_opts = [
-                ('-u', '--user', 'string', False, 'user',  "JID of the bot")
+                ('-u', '--user', 'string', False, 'user',  "JID of the bot"),
+                ('', '--openfire', 'string', False, 'openfire',  "enable openfire mode")
             ]
 
 fleet_opts = [
@@ -164,10 +165,10 @@ def make_opts(args, optslist=[], parser=None):
 def do_opts(type="console", args=[], *argslist, **kwargs):
     from tl.version import getversion
     if not args: args = sys.argv
-    if type != "console": print(getversion(type.upper()))
+    if type != "console": print("T I M E L I N E\n%s" % getversion(type.upper()))
     cfg = None
     if type == "irc": target = api_opts + bot_opts + irc_opts
-    elif type in ["xmpp", "sxmpp", "xmpp"]: target = api_opts + bot_opts + xmpp_opts
+    elif type in ["xmpp", ]: target = api_opts + bot_opts + xmpp_opts
     elif type == "fleet": target = api_opts + fleet_opts
     elif type == "init": target = []
     elif type == "console": target = bot_opts + console_opts

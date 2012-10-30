@@ -22,5 +22,5 @@ __version__ = version
 
 def getversion(txt=""):
     """ return a version string. """
-    if txt: return "T I M E L I N E\n%s VERSION %s" % (txt, version)
-    else: return "T I M E L I N E\nVERSION %s" % version
+    if txt: return "VERSION %s %s" % (version, txt)
+    else: return "VERSION %s" % version

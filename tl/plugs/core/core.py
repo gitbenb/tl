@@ -184,7 +184,7 @@ def handle_version(bot, ievent):
         except: tip = None
     if tip: version2 = version + " HG " + tip
     else: version2 = version
-    ievent.reply(version2)
+    ievent.reply("T I M E L I N E - %s" % version2)
 
 cmnds.add('version', handle_version, ['USER', 'GUEST'])
 examples.add('version', 'show version of the bot', 'version')
