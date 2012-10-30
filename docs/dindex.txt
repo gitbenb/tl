@@ -9,6 +9,6 @@ tl.drivers
 
     console/index
     irc/index
-    sleek/index
+    xmpp/index
     tornado/index
     twitter/index

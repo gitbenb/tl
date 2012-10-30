@@ -99,7 +99,7 @@ def getwho(bot, who, channel=None):
     """ get userhost from bots userhost cache """
     who = who.lower()
     try:
-        if bot.type in ["xmpp", "sxmpp", "sleek"]: return stripped(bot.userhosts[who])
+        if bot.type in ["xmpp", "sxmpp", "xmpp"]: return stripped(bot.userhosts[who])
         else: return bot.userhosts[who]
     except KeyError: pass
     

@@ -428,7 +428,7 @@ servermodes = ""
 
 """
 
-sleektemplate = """# =====================================================
+xmpptemplate = """# =====================================================
 #
 # T I M E L I N E CONFIGURATION FILE - 
 #
@@ -463,7 +463,7 @@ password = ""
 server = ""
 
 # - the bot's type.
-type = "sleek"
+type = "xmpp"
 
 # - user used to login on xmpp networks.
 user = ""
@@ -491,5 +491,5 @@ def makedefaultconfig(type, ddir=None):
     logging.debug("filename is %s" % cfile)
     f = open(cfile, "w")
     if type == "irc": f.write(irctemplate) ; f.close()
-    elif type in ["sleek", "xmpp", "sxmpp"]: f.write(sleektemplate) ; f.close()
+    elif type in ["xmpp", "xmpp", "sxmpp"]: f.write(xmpptemplate) ; f.close()
     else: raise Exception("no such bot type: %s" % type)

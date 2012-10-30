@@ -1,4 +1,4 @@
-# tl/drivers/sleek/message.py
+# tl/drivers/xmpp/message.py
 #
 #
 

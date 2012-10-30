@@ -9,7 +9,7 @@ the tl pakage contains the following programs:
     * tl-fleet - mix IRC and XMPP bots
     * tl-irc - IRC bot
     * tl-tornado - a shell web server based on tornado
-    * tl-sleek - XMPP bot
+    * tl-xmpp - XMPP bot
 
 note: T I M E L I N E is in very early stage of development right now and still subject to change of protocols and API.
 

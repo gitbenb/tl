@@ -21,7 +21,7 @@ the tl pakage contains the following programs:
     * tl-fleet - mix IRC and XMPP bots
     * tl-irc - IRC bot
     * tl-tornado - a shell web server based on tornado
-    * tl-sleek - XMPP bot
+    * tl-xmpp - XMPP bot
 
 note: T I M E L I N E is in very early stage of development right now and still subject to change of protocols and API.
 
@@ -133,13 +133,13 @@ Run the following to make the bot connect to an Jabber server:
 
     ::
 
-        ./bin/tl-sleek -o <owner JID> -u <bot JID> -p <password> [-c <conference>] [-s <server>]
+        ./bin/tl-xmpp -o <owner JID> -u <bot JID> -p <password> [-c <conference>] [-s <server>]
 
 Or when configuration files already exist, just run the bot without arguments:
 
     ::
 
-        ./bin/tl-sleek
+        ./bin/tl-xmpp
 
 Conference and server options are optional. Server is take from the -u
 option if not provided as a seperate option. 

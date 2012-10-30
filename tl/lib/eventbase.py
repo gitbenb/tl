@@ -18,7 +18,7 @@ from tl.lib.config import Config, getmainconfig
 from tl.lib.users import getusers
 from tl.lib.commands import cmnds
 from tl.lib.floodcontrol import floodcontrol
-from tl.drivers.sleek.namespace import attributes, subelements
+from tl.drivers.xmpp.namespace import attributes, subelements
 from tl.id import get_uid
 
 ## basic imports

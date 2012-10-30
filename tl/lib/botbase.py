@@ -553,7 +553,7 @@ class BotBase(LazyDict):
         if dot == "count": dot = "<br>"
         if txt:
              if res and self.type in ["console", "tornado"]: ret = "%s<br><br>" % txt + dot.join(res)
-             elif res and self.type in ["sxmpp", "xmpp", "sleek"]: ret = "%s\n\n" % txt + dot.join(res)
+             elif res and self.type in ["sxmpp", "xmpp", "xmpp"]: ret = "%s\n\n" % txt + dot.join(res)
              else: ret = txt + dot.join(res)   
         elif res: ret = dot.join(res)
         if ret: return ret

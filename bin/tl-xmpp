@@ -22,7 +22,7 @@ sys.path.insert(0, os.getcwd())
 
 from tl.utils.opts import do_opts
 
-(opts, cfg) = do_opts("sleek")
+(opts, cfg) = do_opts("xmpp")
 
 ## remaining tl imports
 
@@ -41,7 +41,7 @@ boot(opts.datadir)
 ## start the bot
 
 try:
-    from tl.drivers.sleek.bot import SleekBot
+    from tl.drivers.xmpp.bot import SleekBot
     bot = SleekBot(cfg)
 except NoOwnerSet as ex:
     print("owner is not set in %s - use the -o option" % str(ex))
@@ -52,7 +52,7 @@ if opts.channel and not opts.channel in bot.cfg.channels:
     bot.cfg.save()
 
 try:
-    logging.warn("starting sleekxmpp bot with user %s" % bot.cfg.user)
+    logging.warn("starting xmppxmpp bot with user %s" % bot.cfg.user)
     start_new_thread(bot.boot, ())
 except KeyboardInterrupt: globalshutdown()
 except: handle_exception() ; globalshutdown()

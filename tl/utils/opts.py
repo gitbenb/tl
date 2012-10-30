@@ -167,7 +167,7 @@ def do_opts(type="console", args=[], *argslist, **kwargs):
     if type != "console": print(getversion(type.upper()))
     cfg = None
     if type == "irc": target = api_opts + bot_opts + irc_opts
-    elif type in ["xmpp", "sxmpp", "sleek"]: target = api_opts + bot_opts + xmpp_opts
+    elif type in ["xmpp", "sxmpp", "xmpp"]: target = api_opts + bot_opts + xmpp_opts
     elif type == "fleet": target = api_opts + fleet_opts
     elif type == "init": target = []
     elif type == "console": target = bot_opts + console_opts
@@ -189,7 +189,7 @@ def do_opts(type="console", args=[], *argslist, **kwargs):
     from tl.lib.config import getmainconfig
     maincfg = getmainconfig(opts.datadir)
     if type == "irc": cfg = makeircconfig(opts, opts.name)
-    elif type == "xmpp" or type == "sleek": cfg = makexmppconfig(opts, opts.name)
+    elif type == "xmpp" or type == "xmpp": cfg = makexmppconfig(opts, opts.name)
     elif type == "console": cfg = makeconsoleconfig(opts, opts.name)
     else: cfg = makedefaultconfig(opts, opts.name) 
     if maincfg.dbtype: logging.warn("database type is %s" % maincfg.dbtype)
@@ -295,7 +295,7 @@ def makeircconfig(opts=None, botname=None):
 
 ## makexmppconfig function
 
-def makexmppconfig(opts=None, botname=None, type="sleek"):
+def makexmppconfig(opts=None, botname=None, type="xmpp"):
     """ make config file based on options. """
     if not opts: botname = botname or "default-%s" % type
     else:

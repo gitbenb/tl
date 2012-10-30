@@ -110,7 +110,7 @@ class Fleet(Persist):
 
     def getfirstjabber(self):
         """ return the first jabber bot of the fleet. """
-        return self.getfirstbot("sleek")
+        return self.getfirstbot("xmpp")
         
     def size(self):
         """ return number of bots in fleet. """
@@ -292,7 +292,7 @@ class Fleet(Persist):
         target = bots or self.bots
         for bot in target:
             logging.debug('starting %s bot (%s)' % (bot.cfg.name, bot.type))
-            if usethreads or bot.type in ["sleek", "tornado"]: threads.append(start_new_thread(bot.boot, ())) ; continue
+            if usethreads or bot.type in ["xmpp", "tornado"]: threads.append(start_new_thread(bot.boot, ())) ; continue
             try: bot.boot()
             except Excepton as ex: handle_exception()
             time.sleep(1)

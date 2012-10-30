@@ -4,7 +4,7 @@
 0.2.1 - fix twitter support
 0.2   - fix docs
 0.1.4 - fix RSS, lots of tweak stuff
-0.1.3 - enable --api option for tl-irc, tl-fleet, tl-sleek
+0.1.3 - enable --api option for tl-irc, tl-fleet, tl-xmpp
 0.1.2 - use distribute
 0.1.1 - fixes and cleanup
 0.1   - initial import

@@ -1,4 +1,4 @@
-# tl/driver/sleek/namespace.py
+# tl/driver/xmpp/namespace.py
 #
 #
 

@@ -38,8 +38,8 @@ class BotFactory(Factory):
             elif type == 'tornado':
                 from tl.drivers.tornado.bot import TornadoBot
                 bot = TornadoBot(cfg)
-            elif type == 'sleek' or "xmpp" in type:
-                from tl.drivers.sleek.bot import SleekBot
+            elif type == 'xmpp' or "xmpp" in type:
+                from tl.drivers.xmpp.bot import SleekBot
                 bot = SleekBot(cfg)
             else: raise NoSuchBotType('%s bot .. unproper type %s' % (type, cfg.dump()))
             return bot

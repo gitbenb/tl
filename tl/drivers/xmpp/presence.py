@@ -1,4 +1,4 @@
-# tl/drivers/sleek/presence.py
+# tl/drivers/xmpp/presence.py
 #
 #
 

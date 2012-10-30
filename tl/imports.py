@@ -54,10 +54,10 @@ def getBeautifulSoup():
     logging.debug("BeautifulSoup module is %s" % str(mod))
     return mod
 
-def getsleek():
-    try: mod = _import("sleekxmpp")
-    except: mod = _import("tl.contrib.sleekxmpp")
-    logging.debug("sleek module is %s" % str(mod))
+def getxmpp():
+    try: mod = _import("xmppxmpp")
+    except: mod = _import("tl.contrib.xmppxmpp")
+    logging.debug("xmpp module is %s" % str(mod))
     return mod
 
 def gettweepy():
