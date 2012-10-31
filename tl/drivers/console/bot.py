@@ -6,7 +6,7 @@
 
 ## tl imports
 
-from tl.version import getversion
+from tl.version import getfullversion
 from tl.lib.datadir import getdatadir
 from tl.utils.generic import waitforqueue
 from tl.lib.errors import NoSuchCommand, NoInput, TLStop
@@ -77,7 +77,7 @@ class ConsoleBot(BotBase):
     def startshell(self, connect=True):
         """ start the console bot. """
         self.start(False)
-        print("T I M E L I N E\n%s" % getversion("CONSOLE"))
+        print(getfullversion("CONSOLE"))
         while not self.stopped: 
             try: 
                 mainhandler.handle_one()

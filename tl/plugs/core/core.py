@@ -170,21 +170,8 @@ examples.add('perm', 'show permission of command', 'perm quit')
 
 def handle_version(bot, ievent):
     """ no arguments - show bot's version. """
-    from tl.version import getversion
-    version = getversion(bot.type.upper())
-    cfg = getmainconfig()
-    if cfg.dbenable: version += " " + cfg.dbtype.upper()
-    tip = None
-    if ievent.rest and ievent.rest == "repo":
-        try: 
-            from mercurial import context, hg, node, repo, ui
-            repository = hg.repository(ui.ui(), '.')
-            ctx = context.changectx(repository)
-            tip = str(ctx.rev())
-        except: tip = None
-    if tip: version2 = version + " HG " + tip
-    else: version2 = version
-    ievent.reply("T I M E L I N E - %s" % version2)
+    from tl.version import getfullversion
+    ievent.reply(getfullversion(str(bot.type).upper()))
 
 cmnds.add('version', handle_version, ['USER', 'GUEST'])
 examples.add('version', 'show version of the bot', 'version')

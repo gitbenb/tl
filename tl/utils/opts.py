@@ -174,9 +174,9 @@ def make_opts(args, optslist=[], parser=None):
 ## do_opts function
 
 def do_opts(type="console", args=[], *argslist, **kwargs):
-    from tl.version import getversion
+    from tl.version import getfullversion
     if not args: args = sys.argv
-    if type != "console": print("T I M E L I N E\n%s" % getversion(type.upper()))
+    if type != "console": print(getfullversion(type.upper()))
     cfg = None
     if type == "irc": target = api_opts + bot_opts + irc_opts
     elif type == "xmpp": target = api_opts + bot_opts + xmpp_opts
