@@ -16,6 +16,7 @@ from tl.utils.lazydict import LazyDict
 #from tl.memcached import startmcdaemon
 from tl.utils.source import getsource
 from tl.utils.locking import lockdec
+from tl.version import getfullversion
 
 ## basic imports
 
@@ -173,7 +174,8 @@ def boot(ddir=None, force=False, encoding="utf-8", umask=None, saveperms=True, f
         savepluginlist()
         savecallbacktable()
         savealiases()
-    logging.warn("booting is ready")
+    logging.error(getfullversion(getdatadir()))
+    logging.warn("READY")
 
 ## filestamps stuff
 

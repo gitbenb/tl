@@ -24,6 +24,7 @@ from .presence import Presence
 ## basic imports
 
 import logging
+import time
 
 ## BotyXMPPBot class
 
@@ -62,10 +63,10 @@ class SleekBot(BotBase):
             self.xmpp.ssl_version = ssl.PROTOCOL_SSLv3
 
     def session_start(self, event):
-        logging.warn("session started")
+        logging.warn("LOGGED ON %s" % self.cfg.server or self.cfg.host)
+        time.sleep(0.01)
         self.xmpp.send_presence()
         start_new_thread(self.joinchannels, ())
-        self.connectok.set()
         
     def exception(self, ex): logging.error(str(ex))
 
@@ -87,15 +88,13 @@ class SleekBot(BotBase):
                 self.xmpp.connect((self.cfg.server, self.cfg.port or 5222))
             self.xmpp.process(block=True)
         except Exception as ex: logging.error(str(ex))
+        return True
 
     def send(self, event):
         try:
             xml = event.tojabber()
-            if not xml:
-                raise Exception("can't convert %s to xml .. bot.send()" % what)
-        except (AttributeError, TypeError):
-            handle_exception()
-            return
+            if not xml: raise Exception("can't convert %s to xml .. bot.send()" % what)
+        except (AttributeError, TypeError): handle_exception() ; return
         self.xmpp.send_raw(xml)
 
     def outnocb(self, printto, txt, how=None, event=None, html=False, isrelayed=False, *args, **kwargs):
@@ -108,8 +107,7 @@ class SleekBot(BotBase):
         repl.to = target
         repl.type = (event and event.type) or "chat"
         repl.txt = txt
-        if html:
-            repl.html = txt
+        if html: repl.html = txt
         logging.debug("%s - reply is %s" % (self.cfg.name, repl.dump()))
         if not repl.type: repl.type = 'normal'
         logging.debug("%s - sxmpp - out - %s - %s" % (self.cfg.name, printto, str(txt)))
@@ -159,7 +157,7 @@ class SleekBot(BotBase):
                     self.jids[channel] = {}
                 self.jids[channel][nickk] = jid
                 self.userhosts[nickk] = stripped(jid)
-                logging.debug('%s - setting jid of %s (%s) to %s' % (self.cfg.name, nickk, channel, self.userhosts[nickk]))
+                logging.info('%s - setting jid of %s (%s) to %s' % (self.cfg.name, nickk, channel, self.userhosts[nickk]))
             if p.type == 'subscribe':
                 pres = Presence({'to': p.fromm, 'type': 'subscribed'})
                 self.send(pres)
