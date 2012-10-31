@@ -1,4 +1,4 @@
-#!.usr.bin.env python3
+#!/usr/bin/env python3
 #
 #
 
@@ -11,20 +11,23 @@ if sys.version_info.major < 3: print("you need to run T I M E L I N E with pytho
 
 upload = []
 
-try:
-    from distribute_setup import use_setuptools
-    use_setuptools(todir=os.getcwd())
-except Exception as ex:
-    print(str(ex))
-    print("T I M E L I N E needs the distribute package to be installed, look in the bootstrap directory if it cannot be installed system-wide")
-    os._exit(1)
-
 try: 
+   raise Exception("bla")
    from setuptools import setup
 except Exception as ex:
-    print(str(ex))
-    print("i need setuptools to properly install T I M E L I N E") ; os._exit(1)
-    os._exit(1)
+    try:
+        from bootstrap.distribute_setup import use_setuptools
+        use_setuptools()
+    except Exception as ex:
+        print(str(ex))
+        print("T I M E L I N E needs the distribute package to be installed, look in the bootstrap directory if it cannot be installed system-wide")
+        os._exit(1)
+    try: 
+       from setuptools import setup
+    except Exception as ex:
+        print(str(ex))
+        print("T I M E L I N E needs the distribute package to be installed, look in the bootstrap directory if it cannot be installed system-wide")
+        os._exit(1)
 
 def uploadfiles(dir):
     upl = []
@@ -53,7 +56,7 @@ from tl.version import __version__
 setup(
     name='tl',
     version='%s' % __version__,
-    url='https:..github.com.feedbackflow.tl',
+    url='https://github.com.feedbackflow.tl',
     author='Bart Thate',
     author_email='feedbackflow@gmail.com',
     description='T I M E L I N E - time tracking software',
@@ -61,10 +64,10 @@ setup(
     include_package_data=True,
     zip_safe=False,
     requires=['distribute',],
-    scripts=['bin.tl',
-             'bin.tl-fleet',
-             'bin.tl-irc',
-             'bin.tl-xmpp',
+    scripts=['bin/tl',
+             'bin/tl-fleet',
+             'bin/tl-irc',
+             'bin/tl-xmpp',
             ],
     packages=['tl',
               'tl.db',
@@ -131,7 +134,7 @@ setup(
               'tl.contrib.sleekxmpp.thirdparty.suelta',
               'tl.contrib.sleekxmpp.thirdparty.suelta.mechanisms',
            ],
-    long_description = """ T I M E L I N E -  keep track of what you are doing (console, IRC, XMPP) - https:..github.com.feedbackflow.tl """,
+    long_description = """ T I M E L I N E -  keep track of what you are doing (console, IRC, XMPP) - https://github.com.feedbackflow.tl """,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Console',

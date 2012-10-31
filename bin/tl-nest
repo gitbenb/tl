@@ -32,7 +32,7 @@ sys.path.insert(0, installdir)
 sys.path.insert(0, installdir + os.sep + 'bin')
 
 try:
-    from distribute_setup import use_setuptools
+    from bootstrap.distribute_setup import use_setuptools
     use_setuptools()
     from setuptools.command.easy_install import main
     import pkg_resources
