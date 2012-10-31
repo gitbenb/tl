@@ -174,7 +174,7 @@ def boot(ddir=None, force=False, encoding="utf-8", umask=None, saveperms=True, f
         savepluginlist()
         savecallbacktable()
         savealiases()
-    logging.error(getfullversion(getdatadir()))
+    logging.warn(getfullversion(getdatadir()))
     logging.warn("READY")
 
 ## filestamps stuff

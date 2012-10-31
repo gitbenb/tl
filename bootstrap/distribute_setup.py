@@ -34,19 +34,10 @@ try:
         return subprocess.call(args) == 0
 
 except ImportError:
-    # will be used for python 2.3
-    def _python_cmd(*args):
-        args = (sys.executable,) + args
-        # quoting arguments if windows
-        if sys.platform == 'win32':
-            def quote(arg):
-                if ' ' in arg:
-                    return '"%s"' % arg
-                return arg
-            args = [quote(arg) for arg in args]
-        return os.spawnl(os.P_WAIT, sys.executable, *args) == 0
+    print("run distribute_setup.py with python3") 
+    os._exit(1)
 
-DEFAULT_VERSION = "0.6.28"
+DEFAULT_VERSION = "0.6.30"
 DEFAULT_URL = "http://pypi.python.org/packages/source/d/distribute/"
 SETUPTOOLS_FAKED_VERSION = "0.6c11"
 
