@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# JSONBOT documentation build configuration file, created by
+# T I M E L I N E  documentation build configuration file, created by
 # sphinx-quickstart on Thu Jul  2 23:24:35 2009.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -38,9 +38,9 @@ sys.path.insert(0, os.path.abspath(os.path.join('..', 'tl', 'data')))
 
 # tl set datadir
 
-from tl.lib.datadir import setdatadir
-from tl.version import __version__
-setdatadir("docs" + os.sep + "docrun")
+#from tl.lib.datadir import setdatadir
+#from tl.version import __version__
+#setdatadir("docs" + os.sep + "docrun")
 
 #print sys.path
 # General configuration
@@ -72,6 +72,7 @@ copyright = u'2012 FeedBackFlow'
 # built documents.
 #
 # The short X.Y version.
+__version__ = "0.4.4"
 version = '%s' % __version__ 
 # The full version, including alpha/beta/rc tags.
 release = '%s RELEASE' % __version__

@@ -102,7 +102,7 @@ def gendoc(m, f, output):
         author = plug.__author__
         output.write(":author:  %s" % author.strip() + '\n')
     except AttributeError:
-        output.write(":author:  FeedBackLoop <feedbackloop@gmail.com>" + '\n')
+        output.write(":author:  Bart Thate <feedbackloop@gmail.com>" + '\n')
     output.write(":contact: FREENODE/#tl" + '\n')
     output.write(':distribution: core' + '\n')
     try:
@@ -365,7 +365,7 @@ if __name__ == '__main__':
     from tl.utils.generic import touch
     from tl.utils.exception import handle_exception
     from tl.utils.log import setloglevel
-    setloglevel("warn")
+    setloglevel("error")
     try: shutil.rmtree(os.getcwd() + os.sep + 'docs' + os.sep + 'plugins') ; logging.warn("removed plugins dir")
     except: pass
     try: shutil.rmtree(os.getcwd() + os.sep + 'docs' + os.sep + 'tl') ; logging.warn("removed tl dir")

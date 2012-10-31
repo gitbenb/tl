@@ -13,7 +13,7 @@ upload = []
 
 try:
     from distribute_setup import use_setuptools
-    use_setuptools()
+    use_setuptools(todir=os.getcwd())
 except Exception as ex: print("installing distribute") ; os.popen("python3 ./distribute_setup.py")
 
 try: 

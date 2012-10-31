@@ -6,4 +6,4 @@ cd docs
 rm -fR gzz
 cd ..
 ./bin/tl-makedocs docs/docrun
-sphinx-build -N docs docs/html
+/usr/local/bin/sphinx-build docs docs/html
