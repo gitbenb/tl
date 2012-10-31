@@ -84,7 +84,7 @@ class SleekBot(BotBase):
         try:
             if connect:
                 logging.warn("connecting to %s using %s" % (self.cfg.server, self.cfg.user)) 
-                self.xmpp.connect()
+                self.xmpp.connect((self.cfg.server, self.cfg.port or 5222))
             self.xmpp.process(block=True)
         except Exception as ex: logging.error(str(ex))
 
