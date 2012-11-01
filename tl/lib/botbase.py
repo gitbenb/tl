@@ -294,6 +294,7 @@ class BotBase(LazyDict):
                 self.started = False
                 if self.start(): break
             except Exception as ex:
+                self.exit()
                 handle_exception()
                 logging.error(str(ex))
                 logging.error("sleeping 15 seconds")
@@ -389,7 +390,7 @@ class BotBase(LazyDict):
         logging.warn("failed ownercheck for %s" % userhost)
         return False
 
-    def exit(self, stop=True, close=True, save=True, quit=False, stopped=True):
+    def exit(self, stop=True, close=True, save=True, quit=False, stopped=True, shutdown=True):
         """ exit the bot. """ 
         logging.warn("%s - exit" % self.cfg.name)
         if stop:
@@ -400,7 +401,7 @@ class BotBase(LazyDict):
         if close:
             self.putonqueue(1, None, "")
             self.put(None)
-            self.shutdown()
+        if shutdown: self.shutdown()
         save and self.save()
         fleet = getfleet()
         fleet.remove(self)
