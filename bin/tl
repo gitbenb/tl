@@ -40,7 +40,7 @@ from tl.lib.exit import globalshutdown
 from tl.lib.fleet import getfleet
 from tl.lib.threads import start_new_thread
 from tl.lib.datadir import getdatadir
-from tl.id import get_id
+from tl.id import get_uid
 
 ## basic imports
 
@@ -61,7 +61,7 @@ if opts.args:
     for cmnd in opts.args:
         if "|" in cmnd: break
         cmndstring += "%s " % cmnd
-    id = get_id()
+    id = get_uid()
     event = bot.make_event(id, opts.channel or id, cmndstring.strip(), showall=True)
     event.nodispatch = False
     try: event.execute(True)

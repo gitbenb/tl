@@ -14,7 +14,7 @@ import binascii
 
 ## defines
 
-version = "0.4.4"
+version = "0.5"
 __version__ = version
 
 ## getversion function

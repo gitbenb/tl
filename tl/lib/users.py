@@ -1,4 +1,4 @@
-# tl/users.py
+# tl/lib/users.py
 #
 #
 
@@ -484,7 +484,7 @@ class Users(Persist):
             user.save()
             return 1
 
-    def make_owner(self, userhosts):
+    def make_owner(self, userhosts, bot=None):
         """ see if owner already has a user account if not add it. """ 
         if not userhosts:
             logging.warn("no userhosts provided in make_owner")
@@ -497,6 +497,11 @@ class Users(Persist):
             if not username or username != 'owner':
                 logging.warn("making owner for %s" % userhosts)
                 if not self.merge('owner', str(userhost)): self.add('owner', [str(userhost), ], ['USER', 'OPER', 'GUEST'])
+        if bot:
+            got = False
+            for u in owner:
+                if u not in bot.cfg.owner: bot.cfg.owner.append(u) ; got = True
+            if got: bot.cfg.save()
 
 ## global users object
 

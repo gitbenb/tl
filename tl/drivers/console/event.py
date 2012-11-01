@@ -26,7 +26,7 @@ class ConsoleEvent(EventBase):
         if not input: raise NoInput()
         self.bot = bot
         self.console = console
-        self.userhost = get_id()
+        self.userhost = get_uid()
         try: self.nick = self.userhost.split("@")[0]
         except: self.nick = "nonick"
         self.origin = self.userhost

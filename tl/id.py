@@ -29,13 +29,11 @@ host = None
 def get_id():
     from tl.lib.datadir import getdatadirstr
     from tl.utils.resolve import resolve_host
-    global user
-    if not user: user = getpass.getuser()
     global host
     if not host: host = resolve_host()
     dstr = getdatadirstr()
     if dstr.startswith("/"): dstr = dstr[1:]
-    return "%s/%s" % ( host, normdir(dstr))
+    return "%s/%s" % (host, normdir(dstr))
 
 ## get_bid function
 
@@ -45,13 +43,16 @@ def get_bid(bot):
 
 ## get_uid function
 
-def get_uid(target):
+def get_uid(target=None):
     """ make a uid (userid) based on username). """
-    from tl.lib.users import getusers
-    user = getusers().byname(target)
-    if not target: user = getusers().getuser(target)
-    if not user: raise NoSuchUser(userhost)
-    uid = get_id() + "/users/" + user.data.name 
+    if target:
+        from tl.lib.users import getusers
+        user = getusers().byname(target)
+        if not target: user = getusers().getuser(target)
+        if not user: raise NoSuchUser(userhost)
+        name = user.data.name
+    else: name = "console/" + getpass.getuser()
+    uid = get_id() + "/users/" + name
     logging.warn("uid is %s" % uid)
     return uid
 
