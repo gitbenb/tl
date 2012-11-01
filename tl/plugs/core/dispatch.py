@@ -11,6 +11,7 @@ from tl.utils.generic import waitforqueue
 from tl.lib.callbacks import last_callbacks
 from tl.lib.errors import NoSuchCommand, NoSuchUser
 from tl.lib.commands import cmnds
+from tl.lib.runner import speechrunner
 
 ## basic logging
 
@@ -55,6 +56,7 @@ def dispatch(bot, event):
         except Exception as ex: handle_exception()
     else:
         logging.debug("dispatch - no go for %s" % event.auth or event.userhost)
+        speechrunner.put(3, "SPEECH", event)
         event.launched() ; event.ready()
 
 

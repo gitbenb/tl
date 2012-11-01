@@ -10,7 +10,7 @@ from tl.lib.commands import cmnds
 from tl.lib.examples import examples
 from tl.lib.boot import default_plugins, plugin_packages, remove_plugin, update_mod
 from tl.utils.exception import handle_exception, exceptionmsg
-from tl.lib.boot import savecmndtable, savepluginlist, update_mod
+from tl.lib.boot import savecmndtable, saveplugins, update_mod
 from tl.lib.errors import NoSuchPlugin, RequireError
 from tl.lib.boot import plugenable, plugdisable
 

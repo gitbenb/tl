@@ -83,6 +83,8 @@ def makedirs(ddir=None):
             os.mkdir('tl-myplugs')
             try: shutil.copy(initsource, "tl-myplugs" + os.sep + "__init__.py")
             except: pass
+    if not os.path.isdir(ddir + '/users/'): os.mkdir(ddir + '/users/')
+    if not os.path.isdir(ddir + '/events/'): os.mkdir(ddir + '/events/')
     if not os.path.isdir(ddir + '/timeline/'): os.mkdir(ddir + '/timeline/')
     if not os.path.isdir(ddir + '/run/'): os.mkdir(ddir + '/run/')
     if not os.path.isdir(ddir + '/twitter/'): os.mkdir(ddir + '/twitter/')

@@ -174,7 +174,7 @@ class Callbacks(object):
 
     def reloadcheck(self, bot, event, target=None):
         """ check if plugin need to be reloaded for callback, """
-        from .boot import plugblacklist
+        from .boot import isdisabled
         plugloaded = []
         done = []
         target = target or event.cbtype or event.cmnd
@@ -188,8 +188,8 @@ class Callbacks(object):
         if not event.nolog: logging.debug("found %s" % str(p))
         for name in p:
             if name in bot.plugs: done.append(name) ; continue
-            if plugblacklist and name in plugblacklist.data:
-                logging.info("%s - %s is in blacklist" % (bot.cfg.name, name))
+            if isdisabled(name):
+                logging.info("%s - %s is disabled" % (bot.cfg.name, name))
                 continue
             elif bot.cfg.loadlist and name not in bot.cfg.loadlist:
                 logging.info("%s - %s is not in loadlist" % (bot.cfg.name, name))
@@ -210,5 +210,11 @@ last_callbacks = Callbacks()
 remote_callbacks = Callbacks()
 api_callbacks = Callbacks()
 
+all_callbacks = [first_callbacks, callbacks, last_callbacks, remote_callbacks, api_callbacks]
+
 def size():
     return "first: %s - callbacks: %s - last: %s - remote: %s" % (first_callbacks.size(), callbacks.size(), last_callbacks.size(), remote_callbacks.size(), api_callbacks.size())
+
+def docallback(bot, event):
+    for cb in all_callbacks:
+        cb.check(bot, event)
