@@ -1,4 +1,4 @@
-# tl/plugs/core.admin.py
+# tl/plugs/core/admin.py
 #
 #
 
@@ -10,7 +10,7 @@ from tl.lib.eventhandler import mainhandler
 from tl.lib.commands import cmnds
 from tl.lib.examples import examples
 from tl.lib.persist import Persist
-from tl.lib.boot import savecmndtable, savepluginlist, boot, plugin_packages, clear_tables, getcmndtable, getcallbacktable
+from tl.lib.boot import savecmndtable, saveplugins, boot, plugin_packages, clear_tables, getcmndtable, getcallbacktable
 from tl.lib.plugins import plugs
 from tl.lib.botbase import BotBase
 from tl.lib.exit import globalshutdown

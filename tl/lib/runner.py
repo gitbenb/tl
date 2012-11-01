@@ -85,7 +85,7 @@ class BotEventRunner(Runner):
 
     def handle(self, job):
         """ schedule a bot command. """
-        speed, descr, func, bot, ievent = job.args
+        speed, descr, func, bot, ievent = job.args 
         self.starttime = time.time()
         self.finished = 0
         self.elapsed = 0
@@ -110,6 +110,20 @@ class LongRunner(Runner):
         self.starttime = time.time()
         if not ievent.nolog: logging.debug("long event handler is %s" % str(func))
         res = func(bot, ievent)
+        self.elapsed = time.time() - self.starttime
+        if self.elapsed < 1 and self.nowrunning not in self.shortrunning: self.shortrunning.append(self.nowrunning)
+        return res
+
+class SpeechRunner(Runner):
+
+    def handle(self, job):
+        """ schedule a bot command. """
+        bot, event = job.args
+        logging.warn("got speech from %s" % event.display())
+        self.starttime = time.time()
+        if not ievent.nolog: logging.debug("long event handler is %s" % str(func))
+        func = job.func
+        res = callbacks.check(bot, ievent)
         self.elapsed = time.time() - self.starttime
         if self.elapsed < 1 and self.nowrunning not in self.shortrunning: self.shortrunning.append(self.nowrunning)
         return res
@@ -209,12 +223,14 @@ waitrunner = Runners("wait", 20, BotEventRunner)
 apirunner = Runners("api", 10, BotEventRunner)
 threadrunner = Runners("thread", 50, Runner)
 urlrunner = Runners("url", 50, Runner)
+speechrunner = Runners("speech", 20, BotEventRunner)
 
-allrunners = [cmndrunner, longrunner, callbackrunner, waitrunner, apirunner, threadrunner, urlrunner]
+allrunners = [speechrunner, cmndrunner, longrunner, callbackrunner, waitrunner, apirunner, threadrunner, urlrunner]
 
 ## cleanup 
 
 def runnercleanup(bot, event):
+    speechrunner.cleanup()
     cmndrunner.cleanup()
     longrunner.cleanup()
     callbackrunner.cleanup()

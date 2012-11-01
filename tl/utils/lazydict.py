@@ -103,9 +103,9 @@ class LazyDict(dict):
 
     def __getattr__(self, attr, default=""):
         """ get attribute. """
-        if "dodefault" in self: d = cpy(self["dodefault"])
-        else: d =  cpy(default)
-        if attr not in self: return d
+        if attr not in self:
+            d = cpy(default)
+            return d
         return self[attr]
 
     def __setattr__(self, attr, value):

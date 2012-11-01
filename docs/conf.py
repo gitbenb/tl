@@ -72,7 +72,7 @@ copyright = u'2012 FeedBackFlow'
 # built documents.
 #
 # The short X.Y version.
-__version__ = "0.4.4"
+__version__ = "0.5"
 version = '%s' % __version__ 
 # The full version, including alpha/beta/rc tags.
 release = '%s RELEASE' % __version__

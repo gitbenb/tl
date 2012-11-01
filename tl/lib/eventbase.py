@@ -19,7 +19,7 @@ from tl.lib.users import getusers
 from tl.lib.commands import cmnds
 from tl.lib.floodcontrol import floodcontrol
 from tl.drivers.xmpp.namespace import attributes, subelements
-from tl.id import get_uid
+from tl.id import get_uid, get_eid
 
 ## basic imports
 
@@ -50,7 +50,7 @@ class EventBase(LazyDict):
 
     def __init__(self, input={}, bot=None, parsetxt=None):
         LazyDict.__init__(self)
-        if bot: self.bot = bot 
+        if bot: self.bot = bot
         self.ctime = time.time()
         self.speed = 5
         self.nrout = 0
@@ -81,6 +81,9 @@ class EventBase(LazyDict):
         """ deepcopy an event. """
         e = EventBase(self)
         return e
+
+    def display(self):
+        return self.eid
 
     def launched(self):
         logging.info(str(self))

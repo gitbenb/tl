@@ -552,19 +552,13 @@ class BugManager(Pdod):
         }
 
     def __init__(self):
-        Pdod.__init__(self, os.path.join(getdatadir(), 'plugs', 'extra', 'bugtracker', 'trackers'))
+        Pdod.__init__(self, os.path.join(getdatadir(), 'plugs', 'tl.plugs.extra.bugtracker', 'trackers'))
         self.load()
 
     def add(self, bot, ievent, type, url):
         assert type in list(self.types.keys()), "unknown bugtracker type, supported: %s" % ', '.join(list(self.types.keys()))
-        if hasattr(bot, 'name'):
-            botname = bot.cfg.name
-        else:
-            botname = bot
-        if hasattr(ievent, 'channel'):
-            channel = ievent.channel
-        else:
-            channel = ievent
+        botname = bot.cfg.name
+        channel = ievent.channel
         if botname not in self.data:
             self.data[botname] = {}
         self.data[bot.cfg.name][channel] = [url, type, False]
@@ -579,19 +573,13 @@ class BugManager(Pdod):
         return True
 
     def load(self):
-        for bot in list(self.data.keys()):
-            for channel in list(self.data[bot].keys()):
+        for bot in self.data.keys():
+            for channel in self.data[bot].keys():
                 self.start(bot, channel)
                 
     def start(self, bot, ievent):
-        if hasattr(bot, 'name'):
-            botname = bot.cfg.name
-        else:
-            botname = bot
-        if hasattr(ievent, 'channel'):
-            channel = ievent.channel
-        else:
-            channel = ievent
+        botname = bot.cfg.name
+        channel = ievent.channel
         if botname not in self.instances:
             self.instances[botname] = {}
         data = self.data[botname][channel]

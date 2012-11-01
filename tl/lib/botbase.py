@@ -110,13 +110,12 @@ class BotBase(LazyDict):
         datadir = getdatadir()
         self.datadir = datadir + os.sep + self.fleetdir
         self.maincfg = getmainconfig()
-        self.owner = self.cfg.owner
-        if not self.owner:
+        if not self.cfg.owner:
             logging.debug("owner is not set in %s - using mainconfig" % self.cfg.cfile)
-            self.owner = self.maincfg.owner
+            self.cfg.owner = self.maincfg.owner
         self.users = usersin or getusers()
-        logging.debug("owner is %s" % self.owner)
-        self.users.make_owner(self.owner)
+        logging.debug("owner is %s" % self.cfg.owner)
+        self.users.make_owner(self.cfg.owner)
         self.outcache = outcache
         self.userhosts = LazyDict()
         self.nicks = LazyDict()

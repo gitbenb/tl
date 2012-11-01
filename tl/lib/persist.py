@@ -1,4 +1,4 @@
-# tl/persist.py
+# tl/lib/persist.py
 #
 #
 
@@ -39,6 +39,7 @@ import types
 import copy
 import sys
 import time
+import uuid
 
 ## defines
 
@@ -88,15 +89,14 @@ class Persist(object):
         
     def __init__(self, filename, default=None, init=True, postfix=None):
         """ Persist constructor """
-        filename = filename.replace("//", "/")
         filename = normdir(filename)
         self.origname = filename
         if postfix: self.fn = str(filename.strip()) + str("-%s" % postfix)
         else: self.fn = str(filename.strip())
         self.lock = _thread.allocate_lock() # lock used when saving
-        self.data = LazyDict(default=default) # attribute to hold the data
+        self.data = None
+        #self.data = LazyDict(default=default) # attribute to hold the data
         self.logname = reversename(stripdatadir(self.origname))
-        self.pid = get_pid(self)
         self.countername = self.fn + "_" + "counter"
         if got:
             count = mc.get(self.countername)
@@ -107,8 +107,11 @@ class Persist(object):
         self.jsontxt = ""
         self.dontsave = False
         if init:
-            self.init(default)
             if default == None: default = LazyDict()
+            self.init(default)
+        self.data.ctime = self.data.ctime or time.time()
+        self.data.uuid = self.data.uuid or str(uuid.uuid4())
+        self.data.pid = get_pid(self)
 
     def size(self):
         return "%s (%s)" % (len(self.data), len(self.jsontxt))
@@ -143,14 +146,15 @@ class Persist(object):
         try:
             if self.jsontxt:
                 #logging.debug("loading: %s" % type(self.jsontxt))
-                try: self.data = json.loads(str(self.jsontxt))
+                try: self.input = json.loads(str(self.jsontxt))
                 except Exception as ex: logging.error("ERROR: %s - couldn't parse %s" % (str(ex), self.jsontxt)) ; self.data = None ; self.dontsave = True
-            if not self.data: self.data = LazyDict()
-            elif type(self.data) == dict:
+            if not self.input: self.data = LazyDict()             
+            elif type(self.input) == dict:
                 logging.debug("converting dict to LazyDict")
-                d = LazyDict()
-                d.update(self.data)
+                d = LazyDict(self.data or {})
+                d.update(self.input)
                 self.data = d
+            else: self.data = self.input
             set(self.fn, self.data)
             logging.info("loaded %s - %s" % (self.logname, cachetype))
         except Exception as ex:

@@ -235,7 +235,7 @@ class Commands(LazyDict):
 
         """
         from .boot import getcmndtable 
-        from .boot import plugblacklist
+        from .boot import plugins
         plugloaded = None
         plugin = None
         try:
@@ -272,7 +272,7 @@ class Commands(LazyDict):
         logging.info("plugin is %s" % plugin)
         if not plugin: logging.debug("can't find plugin to reload for %s" % target) ; return  
         if plugin in bot.plugs: logging.info("%s already loaded" % plugin) ; return plugloaded
-        elif plugin in plugblacklist.data: return plugloaded
+        elif plugin in plugins.data.refused: logging.warn("%s is refused" % plugin) ; return plugloaded
         elif bot.cfg.loadlist and plugin not in bot.cfg.loadlist: logging.warn("plugin %s is blacklisted" % plugin) ; return plugloaded
         logging.info("loaded %s on demand" % plugin)
         plugloaded = bot.plugs.reload(plugin)

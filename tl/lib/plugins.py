@@ -19,7 +19,7 @@ from tl.utils.locking import lockdec
 from .tlimport import force_import, _import
 from .morphs import outputmorphs, inputmorphs
 from .wait import waiter
-from .boot import plugblacklist, isenabled
+from .boot import isenabled, isdisabled
 from .runner import threadrunner
 from .threads import getname
 
@@ -81,13 +81,16 @@ class Plugins(LazyDict):
             if m == "myplugs": break 
         modname = ".".join(mod)[:-3]
         if not isenabled(modname): logging.warn("%s is not enabled. not loading" % modname) ; return
-        from .boot import plugblacklist
-        if modname in plugblacklist.data: logging.warn("%s is in blacklist .. not loading." % modname) ; return
+        from .boot import plugins
+        if modname in plugins.data.refused: logging.error("%s is refused .. not loading." % modname) ; return
         logging.debug("plugs - using %s" % modname)
         logging.info("reloading %s" % filename)
         try: self.reload(modname, force)
         except RequireError as ex: logging.info(str(ex))
    
+    def loadforboot(self):
+        self.loadall()
+
     def loadall(self, paths=[], force=True):
         """
             load all plugins from given paths, if force is true .. 
@@ -113,7 +116,7 @@ class Plugins(LazyDict):
             todo.sort()
             for plug in todo:
                 mod = "%s.%s" % (module, plug)
-                if not isenabled(mod): logging.warn("%s is not enabled. not loading" % mod) ; continue
+                if not force and isdisabled(mod): logging.warn("%s is not enabled. not loading" % mod) ; continue
                 try: self.reload(mod, force=force, showerror=True)
                 except RequireError as ex: logging.info(str(ex)) ; continue
                 except KeyError: logging.debug("failed to load plugin package %s" % module) ; continue
@@ -156,10 +159,9 @@ class Plugins(LazyDict):
         """ load a plugin. """
         if not modname: raise NoSuchPlugin(modname)
         if "__pycache__" in modname: return 
-        if not isenabled(modname): logging.warn("%s is not enabled. not loading" % modname) ; return
+        if not force and not isenabled(modname): logging.warn("%s is not enabled. not loading" % modname) ; return
         if not force and modname in loaded: logging.warn("skipping %s" % modname) ; return loaded
-        from .boot import plugblacklist
-        if plugblacklist and modname in plugblacklist.data: logging.warn("%s is in blacklist .. not loading." % modname) ; return loaded
+        if isdisabled(modname): logging.warn("%s is in blacklist .. not loading." % modname) ; return loaded
         if modname in self:
             logging.debug("%s already loaded" % modname)                
             if not force: return self[modname]

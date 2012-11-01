@@ -193,11 +193,9 @@ def do_opts(type="console", args=[], *argslist, **kwargs):
     if opts.bork: tl.utils.exception.bork = True ; logging.warn("bork mode enabled")
     if opts.nourl: tl.utils.url.enabled = False ; logging.warn("url fetching disabled")
     if opts.nocolors: tl.utils.log.docolor = False ; logging.warn("colors in logging is disabled")
-    if opts.owner:
-        from tl.lib.users import getusers
-        u = getusers()
-        if u: u.make_owner(opts.owner)
-        else: raise NoUsers()
+    from tl.lib.users import getusers
+    u = getusers()
+    if opts.owner and u: u.make_owner(opts.owner)
     from tl.lib.config import getmainconfig
     maincfg = getmainconfig(opts.datadir)
     if type == "irc": cfg = makeircconfig(opts, opts.name)
@@ -244,10 +242,9 @@ def makeconsoleconfig(opts=None, botname=None):
     cfg = Config('fleet' + os.sep + botname + os.sep + 'config')
     cfg.type = "console"
     cfg.name = botname
-    if not cfg.owner: cfg.owner = []
-    userid = get_id()
-    cfg.userid = userid
-    if userid not in cfg.owner: cfg.owner.append(userid) ; cfg.save()
+    uid = get_uid()
+    if not cfg.owner: cfg.owner = [uid,]
+    if uid not in cfg.owner: cfg.owner.append(uid) ; cfg.save()
     if opts and opts.loglevel: cfg.loglevel = opts.loglevel
     else: cfg.loglevel = cfg.loglevel or "error"
     return cfg

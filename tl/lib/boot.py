@@ -43,14 +43,13 @@ logging.info("default plugins are %s" % str(default_plugins))
 
 loaded = False
 cmndtable = None 
-pluginlist = None
+plugins = None
 callbacktable = None
 retable = None
 cmndperms = None
 shorttable = None
 timestamps = None
-plugwhitelist = None
-plugblacklist = None
+
 cpy = copy.deepcopy
 
 ## locks
@@ -106,28 +105,25 @@ def boot(ddir=None, force=False, encoding="utf-8", umask=None, saveperms=True, f
     global loaded
     global cmndtable
     global retable
-    global pluginlist
+    global plugins
     global callbacktable
     global shorttable
     global cmndperms
     global timestamps
-    global plugwhitelist
-    global plugblacklist
     if not retable: retable = Persist(rundir + os.sep + 'retable')
     if clear: retable.data = {}
     if not cmndtable: cmndtable = Persist(rundir + os.sep + 'cmndtable')
     if clear: cmndtable.data = {}
-    if not pluginlist: pluginlist = Persist(rundir + os.sep + 'pluginlist')
-    if clear: pluginlist.data = []
+    if not plugins: plugins = Persist(rundir + os.sep + 'plugins')
+    if clear: plugins.data = {}
+    if not plugins.data.available: plugins.data.available = []
+    if not plugins.data.refused: plugins.data.refused = []
+    if not plugins.data.allowed: plugins.data.allowed = []
     if not callbacktable: callbacktable = Persist(rundir + os.sep + 'callbacktable')
     if clear: callbacktable.data = {}
     if not shorttable: shorttable = Persist(rundir + os.sep + 'shorttable')
     if clear: shorttable.data = {}
     if not timestamps: timestamps = Persist(rundir + os.sep + 'timestamps')
-    if not plugwhitelist: plugwhitelist = Persist(rundir + os.sep + 'plugwhitelist')
-    if not plugwhitelist.data: plugwhitelist.data = []
-    if not plugblacklist: plugblacklist = Persist(rundir + os.sep + 'plugblacklist')
-    if not plugblacklist.data: plugblacklist.data = []
     if not cmndperms: cmndperms = Config('cmndperms', ddir=ddir)
     changed = []
     gotlocal = False
@@ -171,7 +167,7 @@ def boot(ddir=None, force=False, encoding="utf-8", umask=None, saveperms=True, f
         logging.debug("using target %s" % str(plugin_packages))
         plugs.loadall(plugin_packages, force=True)
         savecmndtable(saveperms=saveperms)
-        savepluginlist()
+        saveplugins()
         savecallbacktable()
         savealiases()
     logging.warn(getfullversion(getdatadir()))
@@ -370,30 +366,31 @@ def getshorttable():
 
 ## plugin list related commands
 
-def savepluginlist(modname=None):
+def saveplugins(modname=None):
     """ save a list of available plugins to db backend. """
-    global pluginlist
-    if not pluginlist.data: pluginlist.data = []
-    if modname: target = cpy(pluginlist.data)
-    else: target = []
+    global plugins
+    if modname: target = LazyDict(plugins.data)
+    else: target = LazyDict()
+    if not target.available: target.available = []
+    if not target.allowed: target.allowed = []
+    if not target.refused: target.refused = []
     from tl.lib.commands import cmnds
     assert cmnds
     for cmndname, c in cmnds.items():
         if modname and c.modname != modname: continue
         if c and not c.plugname: logging.info("boot - not adding %s to pluginlist" % cmndname) ; continue
-        if c and c.plugname not in target and c.enable: target.append(c.plugname)
+        if c and c.enable: target.available.append(c.plugname)
     assert target
-    target.sort()
     logging.warn("saving plugin list")
-    assert pluginlist
-    pluginlist.data = target
-    pluginlist.save()
+    assert plugins
+    plugins.data = target
+    plugins.save()
 
 def remove_plugin(modname):
     removecmnds(modname)
     removecallbacks(modname)
-    global pluginlist
-    try: pluginlist.data.remove(modname.split(".")[-1]) ; pluginlist.save()
+    global plugins
+    try: plugins.data.available.remove(modname.split(".")[-1]) ; plugins.save()
     except: pass
 
 def clear_tables():
@@ -402,19 +399,22 @@ def clear_tables():
     global pluginlist
     cmndtable.data = {} ; cmndtable.save()
     callbacktable.data = {} ; callbacktable.save()
-    pluginlist.data = [] ; pluginlist.save()
+    plugins.data = {} ; pluginlist.save()
 
 def getpluginlist():
     """ get the plugin list. """
-    global pluginlist
-    if not pluginlist: boot()
-    l = plugwhitelist.data or pluginlist.data
+    global plugins
+    if not plugins: boot()
+    l = plugins.data.available
     result = []
     denied = []
-    for plug in plugblacklist.data:
+    for plug in plugins.data.refused:
         denied.append(plug.split(".")[-1])
+    for plug in plugins.data.allowed:
+        try: denied.remove(plug.split(".")[-1])
+        except: pass
     for plug in l:
-        if plug not in denied: result.append(plug)
+        if plug not in denied and not plug in result: result.append(plug)
     return result
 
 ## update_mod command
@@ -423,7 +423,7 @@ def update_mod(modname):
     """ update the tables with new module. """
     savecallbacktable(modname)
     savecmndtable(modname, saveperms=False)
-    savepluginlist(modname)
+    saveplugins(modname)
 
 def whatcommands(plug):
     tbl = getcmndtable()
@@ -438,35 +438,38 @@ def getcmndperms():
     return cmndperms
 
 def plugenable(mod):
-    if plugwhitelist.data and not mod in plugwhitelist.data: plugwhitelist.data.append(mod) ; plugwhitelist.save() ; return
-    if mod in plugblacklist.data: plugblacklist.data.remove(mod) ; plugblacklist.save()
+    if plugins.data.allowed and not mod in plugins.data.allowed: plugins.data.allowed.append(mod) ; plugins.save() ; return
+    if mod in plugins.data.refused: plugins.data.refused.remove(mod) ; plugins.save()
 
 def plugdisable(mod):
-    if plugwhitelist.data and mod in plugwhitelist.data: plugwhitelist.data.remove(mod) ; plugwhitelist.save() ; return
-    if not mod in plugblacklist.data: plugblacklist.data.append(mod) ; plugblacklist.save()
+    if plugins.data.allowed and mod in plugins.data.allowed: plugins.data.allowed(mod) ; plugins.save() ; return
+    if not mod in plugins.data.refused: plugins.data.refused.append(mod) ; plugins.save()
 
 def isenabled(mod):
-    if plugwhitelist and mod in default_deny and mod not in plugwhitelist.data: return False
-    if plugblacklist and mod in plugblacklist.data: return False
+    if mod in default_deny: return False
+    if mod in plugins.data.refused and not mod in plugins.data.allowed: return False
     return True
+
+def isdisabled(mod):
+    if mod not in default_deny or mod in plugins.data.allowed: return False
+    if plugins.data.refused and mod in plugins.data.refused: return True
+    return False
 
 def disabled(default=None):
     res = default or []
-    black = list(plugblacklist.data)
-    res += black
-    white =  list(plugwhitelist.data)
-    for mod in white:
+    denied = list(plugins.data.refused)
+    res += denied
+    allowed = list(plugins.data.allowed)
+    for mod in allowed:
         try: res.remove(mod)
         except ValueError: pass
     return res
 
 def size():
     global cmndtable
-    global pluginlist
+    global plugins
     global callbacktable
     global cmndperms
     global timestamps 
-    global plugwhitelist
-    global plugblacklist 
-    return "cmndtable: %s - pluginlist: %s - callbacks: %s - timestamps: %s - whitelist: %s - blacklist: %s" % (cmndtable.size(), pluginlist.size(), callbacktable.size(), timestamps.size(), plugwhitelist.size(), plugblacklist.size())
+    return "cmndtable: %s - pluginlist: %s - callbacks: %s - timestamps: %s - allowed: %s - refused: %s" % (cmndtable.size(), plugins.size(), callbacktable.size(), timestamps.size(), plugins.data.allowed.size(), plugins.data.refused.size())
    
