@@ -205,7 +205,7 @@ class EventBase(LazyDict):
         if dolog and not force and self.dontbind: logging.debug("dontbind is set on event . .not binding"); return
         if not force and self.bonded: logging.debug("already bonded") ; return
         dolog and logging.debug("starting bind on %s - %s" % (self.userhost, self.txt)) 
-        target = self.userhost
+        target = self.auth or self.userhost
         bot = bot or self.bot
         if not self.chan:
             if chan: self.chan = chan
@@ -227,11 +227,11 @@ class EventBase(LazyDict):
                 msg = "!! %s -=- %s -=- %s -=- (%s) !!" % (u.data.name, self.usercmnd or "none", self.cbtype, self.bot.cfg.name)
                 dolog and logging.warn(msg)
                 self.user = u
-                self.uid = get_uid(self.user.data.name)
             if self.user: dolog and logging.debug("user bonded from %s" % whichmodule())
         if not self.user and target: dolog and self.iscommand and logging.warn("no %s user found" % target) ; self.nodispatch = True
         self.prepare(bot)
         if self.bot: self.inchan = self.channel in self.bot.cfg.channels
+        if not self.auth: self.auth = self.userhost
         self.bonded = True
         return self
 

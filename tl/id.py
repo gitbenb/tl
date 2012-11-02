@@ -9,6 +9,7 @@
 from tl.utils.name import stripname
 from tl.utils.path import normdir
 from tl.lib.errors import NoSuchUser
+from tl.lib.datadir import getdatadirstr
 
 ## basic imports
 
@@ -65,13 +66,14 @@ def get_bid(bot):
 
 def get_uid(target=None):
     """ make a uid (userid) based on username). """
-    if not target: target = "/console/" + getpass.getuser()
-    from tl.lib.users import getusers
-    user = getusers().byname(target)
-    if not user: user = getusers().getuser(target)
-    if not user: raise NoSuchUser(target)
-    name = user.data.name
-    uid = "/users/" + name
+    if not target: uid = "/console/" + getpass.getuser()
+    else:
+        from tl.lib.users import getusers
+        user = getusers().byname(target)
+        if not user: user = getusers().getuser(target)
+        if not user: raise NoSuchUser(target)
+        name = user.data.name
+        uid = "/users/" + name
     uid = normdir(uid)
     logging.warn("uid is %s" % uid)
     return uid
