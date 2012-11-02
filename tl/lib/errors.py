@@ -18,6 +18,10 @@ import sys
 class TLError(Exception):
     pass
 
+class LazyDictNeeded(TLError): pass
+
+class DictNeeded(TLError): pass
+
 class DatadirNotSet(TLError): pass
 
 class CannotBindBot(TLError): pass

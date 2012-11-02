@@ -18,9 +18,10 @@ from tl.utils.name import stripname, reversename, stripdatadir
 from tl.utils.locking import lockdec
 from tl.utils.timeutils import elapsedstring
 from tl.lib.callbacks import callbacks
-from tl.lib.errors import MemcachedCounterError, JSONParseError
+from tl.lib.errors import MemcachedCounterError, JSONParseError, DictNeeded, LazyDictNeeded
 from tl.id import get_pid
 from .datadir import getdatadir
+from .cache import get, set, delete
 
 ## simplejson imports
 
@@ -40,24 +41,22 @@ import copy
 import sys
 import time
 import uuid
+import fcntl
 
 ## defines
 
 cpy = copy.deepcopy
+needsaving = deque()
 
 ## locks
-
 
 persistlock = _thread.allocate_lock()
 persistlocked = lockdec(persistlock)
 
-## global list to keeptrack of what persist objects need to be saved
-
-needsaving = deque()
+## cleanup function
 
 def cleanup(bot=None, event=None):
     global needsaving
-    #todo = cpy(needsaving)
     r = []
     for p in needsaving:
         try: p.dosave() ; r.append(p) ; logging.warn("saved on retry - %s" % p.fn)
@@ -67,21 +66,7 @@ def cleanup(bot=None, event=None):
         except ValueError: pass
     return needsaving
 
-
-got = False
-#from tl.memcached import getmc
-#mc = getmc()
-#if mc:
-#    status = mc.get_stats()
-#    if status:
-#        logging.warn("memcached uptime is %s" % elapsedstring(status[0][1]['uptime']))
-#        got = True
-#else: logging.debug("no memcached found - using own cache")
-from .cache import get, set, delete
-
-import fcntl
-
-## classes
+## Persist class
 
 class Persist(object):
 
@@ -89,91 +74,44 @@ class Persist(object):
         
     def __init__(self, filename, default=None, init=True, postfix=None):
         """ Persist constructor """
+        if default and not type(default) == dict: raise DictNeeded(filename)
         filename = normdir(filename)
         self.origname = filename
         if postfix: self.fn = str(filename.strip()) + str("-%s" % postfix)
         else: self.fn = str(filename.strip())
-        self.lock = _thread.allocate_lock() # lock used when saving
+        self.default = default
         self.data = None
-        #self.data = LazyDict(default=default) # attribute to hold the data
         self.logname = reversename(stripdatadir(self.origname))
-        self.countername = self.fn + "_" + "counter"
-        if got:
-            count = mc.get(self.countername)
-            try: self.mcounter = self.counter = int(count)
-            except (ValueError, TypeError): self.mcounter = self.counter = mc.set(self.countername, "1") or 0
-        else: self.mcounter = self.counter = 0
         self.ssize = 0
-        self.jsontxt = ""
+        self.input = ""
         self.dontsave = False
-        if init:
-            if default == None: default = LazyDict()
-            self.init(default)
-        self.data.ctime = self.data.ctime or time.time()
-        self.data.uuid = self.data.uuid or str(uuid.uuid4())
-        self.data.pid = get_pid(self)
+        if init: self.init()
 
-    def size(self):
-        return "%s (%s)" % (len(self.data), len(self.jsontxt))
-
-    def init(self, default={}, filename=None):
+    def init(self):
         """ initialize the data. """
-        gotcache = False
-        cachetype = "cache"
-        try:
-            #logging.debug("using name %s" % self.fn)
-            a = get(self.fn)
-            if a: self.data = a
-            else: self.data = None
-            if self.data != None:
-                logging.debug("got data from local cache")
-                return self
-            if got: self.jsontxt = mc.get(self.fn) ; cachetype = "cache"
-            if not self.jsontxt:
+        ctype = "no type set"
+        cachedata = get(self.fn)
+        if cachedata: self.data = cachedata ; ctype = "memory"
+        else:
+           try:
                datafile = open(self.fn, 'r')
-               self.jsontxt = datafile.read()
+               self.input = datafile.read()
                datafile.close()
-               self.ssize = len(self.jsontxt)
-               cachetype = "file"
-               if got: mc.set(self.fn, self.jsontxt)
-        except IOError as ex:
-                if not ex.errno == ENOENT:
-                    logging.error('failed to read %s: %s' % (self.fn, str(ex)))
-                    raise
-                else:
-                    logging.debug("%s is new - setting to %s" % (self.fn, default))
-                    self.jsontxt = json.dumps(default)
-        try:
-            if self.jsontxt:
-                #logging.debug("loading: %s" % type(self.jsontxt))
-                try: self.input = json.loads(str(self.jsontxt))
-                except Exception as ex: logging.error("ERROR: %s - couldn't parse %s" % (str(ex), self.jsontxt)) ; self.data = None ; self.dontsave = True
-            if not self.input: self.data = LazyDict()             
-            elif type(self.input) == dict:
-                logging.debug("converting dict to LazyDict")
-                d = LazyDict(self.data or {})
-                d.update(self.input)
-                self.data = d
-            else: self.data = self.input
-            set(self.fn, self.data)
-            logging.info("loaded %s - %s" % (self.logname, cachetype))
-        except Exception as ex:
-            logging.error('ERROR: %s' % self.fn)
-            raise
-
-    def upgrade(self, filename):
-        self.init(self.data, filename=filename)
-        self.save(filename)
+               ctype = "file"
+           except IOError as ex:
+                if ex.errno != ENOENT: raise
+                self.input = None
+           if self.input: self.data = LazyDict(json.loads(self.input))
+           else: self.data = LazyDict(self.default or {}) ; ctype = "init"
+        if not type(self.data) == LazyDict: raise LazyDictNeeded(self.fn)
+        if ctype == "file": set(self.fn, self.data)
+        logging.warn("loaded %s - %s" % (self.logname, ctype))
 
     def get(self):
-        #logging.debug("getting %s from local cache" % self.fn)
-        a = get(self.fn)
-        #logging.debug("got %s from local cache" % type(a))
-        return a
+        return get(self.fn)
 
     def sync(self):
         logging.debug("syncing %s" % self.fn)
-        if got: mc.set(self.fn, json.dumps(self.data))
         set(self.fn, self.data)
         return self
 
@@ -192,13 +130,6 @@ class Persist(object):
         try:
             if self.dontsave: logging.error("dontsave is set on  %s - not saving" % self.fn) ; return
             fn = self.fn
-            if got: self.mcounter = int(mc.incr(self.countername))
-            if got and (self.mcounter - self.counter) > 1:
-                tmp = json.loads(mc.get(fn))
-                if tmp:
-                    try: tmp.update(self.data) ; self.data = LazyDict(tmp) ; logging.warn("updated %s" % fn)
-                    except AttributeError: pass
-                self.counter = self.mcounter
             d = []
             if fn.startswith(os.sep): d = [os.sep,]
             for p in fn.split(os.sep)[:-1]:
@@ -222,7 +153,6 @@ class Persist(object):
             #logging.debug("setting cache %s - %s" % (fn, jsontxt))
             self.jsontxt = jsontxt
             set(fn, self.data)
-            if got: mc.set(fn, jsontxt)
             logging.warn('%s saved' % self.logname)
         except IOError as ex: logging.error("not saving %s: %s" % (self.fn, str(ex))) ; raise
         except: raise

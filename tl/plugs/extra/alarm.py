@@ -51,7 +51,9 @@ class Alarmitem(LazyDict):
 
     def __init__(self, botname=None, i=0, nick="", ttime=time.time(), txt="", printto=None, d={}):
         if not d: LazyDict.__init__(self)
-        else: LazyDict.__init__(self, d)
+        else:
+            assert(type(d) == dict)
+            LazyDict.__init__(self, d)
         if not self.botname: self.botname = botname or "default-irc"
         self.idnr = self.idnr or i
         self.nick = self.nick or nick
