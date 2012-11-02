@@ -103,7 +103,7 @@ class ConsoleBot(BotBase):
         
     def outnocb(self, printto, txt, *args, **kwargs):
         assert txt
-        if not self.cfg.userid in printto: logging.error("%s is not the owner of this shell . not printing." % printto) ; return
+        if not self.ownercheck(printto): logging.error("%s is not the owner of this shell . not printing." % printto) ; return
         txt = self.normalize(txt)
         self._raw(txt)
 

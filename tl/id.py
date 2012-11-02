@@ -26,33 +26,53 @@ host = None
 
 ## get_id function
 
-def get_id():
+def get_hid():
+    """ return a host id. """
     from tl.lib.datadir import getdatadirstr
     from tl.utils.resolve import resolve_host
     global host
     if not host: host = resolve_host()
+    return host
+
+## get_did function
+
+def get_did():
+    """ return a datadir id. """
     dstr = getdatadirstr()
     if dstr.startswith("/"): dstr = dstr[1:]
-    return "%s/%s" % (host, normdir(dstr))
+    return normdir(dstr)
+
+## get_id function
+
+def get_id():
+    """ return a datadir id. """
+    return get_did()
+
+## get_urlid function
+
+def get_urlid(port=None):
+    return "http://%s@%s:%s/%s" % (shelluser, get_hid(), port or 10102, get_did())
 
 ## get_bid function
 
 def get_bid(bot):
-    bid = get_id() + "-" + bot.cfg.name
+    bid = "/bots/%s" % bot.cfg.name
+    bid = normdir(bid)
+    logging.warn("bid is %s" % bid)
     return bid
 
 ## get_uid function
 
 def get_uid(target=None):
     """ make a uid (userid) based on username). """
-    if target:
-        from tl.lib.users import getusers
-        user = getusers().byname(target)
-        if not target: user = getusers().getuser(target)
-        if not user: raise NoSuchUser(userhost)
-        name = user.data.name
-    else: name = "console/" + getpass.getuser()
-    uid = get_id() + "/users/" + name
+    if not target: target = "/console/" + getpass.getuser()
+    from tl.lib.users import getusers
+    user = getusers().byname(target)
+    if not user: user = getusers().getuser(target)
+    if not user: raise NoSuchUser(target)
+    name = user.data.name
+    uid = "/users/" + name
+    uid = normdir(uid)
     logging.warn("uid is %s" % uid)
     return uid
 
@@ -60,9 +80,9 @@ def get_uid(target=None):
 
 def get_eid(event):
     """ make a event id. """
-    from tl.id import get_id
     logging.warn(event.tojson())
-    eid = get_id() + "/events/%s-%s-%s" % (event.ctime, event.token, event.cbtype) 
+    eid = "/events/%s-%s-%s" % (event.ctime, event.token, event.cbtype) 
+    eid = normdir(eid)
     if event.nobind: logging.debug("eid is %s" % eid) 
     else: logging.warn("eid is %s" % eid)
     return eid
@@ -75,7 +95,8 @@ def get_tlid(event):
     user = getusers().byname(target)
     if not target: user = getusers().getuser(target)
     if not user: raise NoSuchUser(userhost)
-    tlid = get_id() + "/timeline/%s-%s-%s" % (stripname(user.data.name), event.ctime, event.token) 
+    tlid = "/timeline/%s-%s-%s" % (event.ctime, event.token, stripname(user.data.name)) 
+    tlid = normdir(tlid)
     logging.warn("tlid is %s" % tlid)
     return tlid
 
@@ -83,7 +104,8 @@ def get_tlid(event):
 
 def get_pid(obj):
     """ make a persistent object id. """
-    pid = get_id() + "/persist/%s-%s" % (obj.data.ctime, obj.data.uuid) 
+    pid = "/persist/%s" % obj.logname
+    pid = normdir(pid) 
     logging.warn("pid is %s" % pid)
     return pid
 
@@ -91,6 +113,7 @@ def get_pid(obj):
 
 def get_cid(cfg):
     """ make a config file id. """
-    cid = get_id() + "/config/" + cfg.cfgname
+    cid = "/config/" + cfg.cfgname
+    cid = normdir(cid)
     logging.warn("cid is %s" % cid)
     return cid

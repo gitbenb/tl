@@ -74,6 +74,7 @@ globaloptslist = [
 ## core_opts function
 
 core_opts = [
+                ('', '--anon', "store_true", False, 'anon', "enable auto_register functionality"),
                 ('', '--nourl', "store_true", False, 'nourl', "disable geturl functionality"),
                 ('', '--nocolors', 'store_true', False, 'nocolors',  "enable the use of colors"),
                 ('', '--save', 'store_true', False, 'save',  "save to config file"),
@@ -202,6 +203,8 @@ def do_opts(type="console", args=[], *argslist, **kwargs):
     elif type == "xmpp" or type == "xmpp": cfg = makexmppconfig(opts, opts.name)
     elif type == "console": cfg = makeconsoleconfig(opts, opts.name)
     else: cfg = makedefaultconfig(opts, opts.name) 
+    if opts.anon: cfg.auto_register = True ; cfg.guestasuser = True
+    else: cfg.auto_register = False
     if maincfg.dbtype: logging.warn("database type is %s" % maincfg.dbtype)
     return (opts, cfg)
 
@@ -243,7 +246,7 @@ def makeconsoleconfig(opts=None, botname=None):
     cfg.type = "console"
     cfg.name = botname
     uid = get_uid()
-    if not cfg.owner: cfg.owner = [uid,]
+    if not cfg.owner: cfg.owner = []
     if uid not in cfg.owner: cfg.owner.append(uid) ; cfg.save()
     if opts and opts.loglevel: cfg.loglevel = opts.loglevel
     else: cfg.loglevel = cfg.loglevel or "error"

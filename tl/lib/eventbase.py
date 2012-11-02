@@ -152,7 +152,7 @@ class EventBase(LazyDict):
             try: res = cmnds.dispatch(self.bot, self, direct=direct, *args, **kwargs)
             except RequireError as ex: logging.error(str(ex))
             except NoSuchCommand as ex: logging.error("we don't have a %s command" % str(ex)) ; self.ready()
-            except NoSuchUser as ex: logging.error("we don't have user for %s" % str(ex))
+            except NoSuchUser as ex: handle_exception() ; logging.error("cannot find a user for %s" % str(ex))
             except Exception as ex: handle_exception()
         return res
 
@@ -205,7 +205,7 @@ class EventBase(LazyDict):
         if dolog and not force and self.dontbind: logging.debug("dontbind is set on event . .not binding"); return
         if not force and self.bonded: logging.debug("already bonded") ; return
         dolog and logging.debug("starting bind on %s - %s" % (self.userhost, self.txt)) 
-        target = self.auth or self.userhost
+        target = self.userhost
         bot = bot or self.bot
         if not self.chan:
             if chan: self.chan = chan
@@ -216,6 +216,7 @@ class EventBase(LazyDict):
         if not self.user and target and not self.nodispatch:
             if user: u = user
             else: u = bot.users.getuser(target)
+            if not u: u = bot.users.by_uid(target)
             if not u: 
                 cfg = getmainconfig()
                 if cfg.auto_register and self.iscommand:

@@ -130,7 +130,9 @@ def setloglevel(level_name="warn", colors=True, datadir=None):
          ch.addFilter(MyFilter())
          if docolors: ch.setFormatter(formatter_short)
          else: ch.setFormatter(formatter_short_plain)
-         if filehandler: filehandler.setFormatter(formatter_short_plain)
+         if filehandler:
+             filehandler.setLevel(level)
+             filehandler.setFormatter(formatter_short_plain)
     root.addHandler(ch)
     if filehandler: root.addHandler(filehandler)
     logging.warn("loglevel is %s (%s)" % (str(level), level_name))

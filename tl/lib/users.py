@@ -37,16 +37,16 @@ class JsonUser(Persist):
 
     def __init__(self, name, userhosts=[], perms=[], permits=[], status=[], email=[]):
         assert name
-        name = stripname(name.lower())
-        Persist.__init__(self, getdatadir() + os.sep + 'users' + os.sep + name)
+        target = stripname(name.lower())
+        Persist.__init__(self, getdatadir() + os.sep + 'users' + os.sep + target)
         self.data.datadir = self.data.datadir or getdatadir()
-        self.data.name = self.data.name or name
+        self.data.name = self.data.name or target
         self.data.userhosts = self.data.userhosts or list(userhosts)
         self.data.perms = self.data.perms or list(perms)
         self.data.permits = self.data.permits or list(permits)
         self.data.status = self.data.status or list(status)
         self.data.email = self.data.email or list(email)
-        self.state = UserState(name)
+        self.state = UserState(target)
 
 ## Users class
 
@@ -81,10 +81,21 @@ class Users(Persist):
         """ return user by name. """ 
         try:
             name = name.lower()
-            #name = stripname(name)
             user = JsonUser(name)
             if user.data.userhosts and not user.data.deleted: return user
-        except KeyError: raise NoSuchUser(name)
+        except KeyError: user = None
+        if not user: raise NoSuchUser(name)
+
+    def by_uid(self, name):
+        """ return user by uid. """ 
+        try:
+            if "/" in name: target = name.split("/")[-1]
+            else: target = name
+            name = target.lower()
+            user = JsonUser(name)
+            if user.data.userhosts and not user.data.deleted: return user
+        except KeyError: user = None
+        if not user: raise NoSuchUser(name)
 
     def merge(self, name, userhost):
         """ add userhosts to user with name """
@@ -130,7 +141,8 @@ class Users(Persist):
         if 'ANY' in perms: return 1
         if bot and bot.allowall: return 1
         res = None
-        user = self.getuser(userhost)
+        user = self.by_uid(userhost)
+        if not user: user = self.getuser(userhost)
         if not user: logging.warn('%s userhost denied' % userhost) ; return res
         else:
             uperms = set(user.data.perms)

@@ -36,7 +36,9 @@ class SleekBot(BotBase):
         self.type = "xmpp"
         self.jids = {}
         self.xmpp = sleekxmpp.ClientXMPP(cfg.user, cfg.password)
+        self.xmpp.whitespace_keepalive = False
         self.xmpp.add_event_handler("session_start", self.session_start)
+        self.xmpp.add_event_handler("session_end", self.session_end)
         self.xmpp.add_event_handler("message", self.handle_message)
         self.xmpp.add_event_handler('disconnected', self.handle_disconnected)
         self.xmpp.add_event_handler('connected', self.handle_connected)
@@ -65,8 +67,10 @@ class SleekBot(BotBase):
     def session_start(self, event):
         logging.warn("LOGGED ON %s" % self.cfg.server or self.cfg.host)
         time.sleep(0.01)
-        self.xmpp.send_presence()
         start_new_thread(self.joinchannels, ())
+
+    def session_end(self, event):
+        logging.warn("SESSION STOPPED ON %s" % self.cfg.server or self.cfg.host)
         
     def exception(self, ex): logging.error(str(ex))
 
