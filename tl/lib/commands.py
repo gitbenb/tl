@@ -92,6 +92,25 @@ class Commands(LazyDict):
         except IndexError: pass
         return self
 
+    def resolvealias(self, cmnd, event=None):
+        alias = None
+        if event:
+            try: alias = event.chan.data.aliases[cmnd]
+            except (KeyError, TypeError): pass
+        if not alias:
+            try: alias = getaliases()[cmnd]
+            except (KeyError, TypeError): pass
+        if not alias:
+            if not cmnd in self:
+                try:
+                    short = getshorttable()
+                    if cmnd in short:
+                        cmndlist = short[cmnd]
+                        if len(cmndlist) == 1: alias = cmndlist[0]
+                        else: event and event.reply("choose one of: ", cmndlist) ; return
+                except Exception as ex: handle_exception()
+        return alias
+
     def checkre(self, bot, event):
         for r in self.regex:
             s = re.search(r.cmnd, event.stripcc().strip())
@@ -118,32 +137,16 @@ class Commands(LazyDict):
             if not cmnd: cmnd = event.execstr.split()[0]
             if not cmnd: cmnd = event.txt.split()[0]
         except Exception as ex: logging.warn("can't determine command from %s" % event.txt) ; return None
-        try:
-            a = event.chan.data.aliases[cmnd]
-            if a: cmnd = a.split()[0] ; aliased = True
-        except (KeyError, TypeError):
-            try:
-                a = getaliases()[cmnd]
-                if a: cmnd = a.split()[0] ; aliased = True
-            except (KeyError, TypeError):
-                if not cmnd in self:
-                    try:
-                        short = getshorttable()
-                        if cmnd in short:
-                            cmndlist = short[cmnd]
-                            if len(cmndlist) == 1: cmnd = cmndlist[0]
-                            else: event.reply("choose one of: ", cmndlist) ; return
-                    except Exception as ex: handle_exception()
-        logging.info("trying for %s" % cmnd)
+        target = self.resolvealias(cmnd) or cmnd
+        logging.info("trying for %s" % target)
         result = None
         try:
-            result = self[cmnd]
+            result = self[target]
         except KeyError: pass
         logging.debug("woulddispatch result: %s" % result)
         if result: event.bloh() ; event.makeargs()
-        if aliased: event.usercmnd = cmnd
+        if target != cmnd: event.usercmnd = target
         return result
-
 
     def dispatch(self, bot, event, direct=False):
         """ 
@@ -219,7 +222,8 @@ class Commands(LazyDict):
     def whereis(self, cmnd):
         """ return plugin name in which command is implemented. """
         from .boot import getcmndtable
-        try: return getcmndtable()[cmnd]
+        target = self.resolvealias(cmnd) or cmnd
+        try: return getcmndtable()[target]
         except KeyError: return ""
 
     def gethelp(self, cmnd):
@@ -241,7 +245,7 @@ class Commands(LazyDict):
         try:
             if not target:
                 target = event.iscmnd().split()[0]
-                if not target: target = evemt.txt.split()[0]
+                if not target: target = event.txt.split()[0]
         except Exception as ex: target = None
         if not target: logging.debug("can't find target in %s" % event.txt) ; return
         from tl.lib.aliases import getaliases
